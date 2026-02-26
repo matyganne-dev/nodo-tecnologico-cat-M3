@@ -1,5 +1,5 @@
 
-👾 RESUMEN CON UNA FRASE CADA UNO:
+# 👾 RESUMEN CON UNA FRASE CADA UNO:
 
 path → solo trabaja con texto, no crea nada
 
@@ -13,7 +13,7 @@ events → muchas funciones reaccionan a un solo aviso
 
 
 
-📁 path (Rutas de archivos)
+# 📁 path (Rutas de archivos)
 
 En tu práctica: Escribiste un código que mostraba en consola cosas como "Directorio base: ./data"
 y "Extensión: .txt". Después buscaste en tu PC y no apareció ninguna carpeta 'data' ni ningún
@@ -27,7 +27,7 @@ Para recordar: path = texto, no crea nada
 
 
 
-📁 fs (File System - Archivos reales)
+# 📁 fs (File System - Archivos reales)
 
 En tu práctica: Ejecutaste y te apareció un error "ENOENT". Después entendiste que era porque no 
 existía la carpeta 'data'. Cuando la creaste manualmente, funcionó. Además viste que los mensajes
@@ -42,7 +42,7 @@ Para recordar: fs = archivos reales, asincrónico, necesita que las carpetas exi
 
 
 
-📁 http (Servidores web)
+# 📁 http (Servidores web)
 
 En tu práctica: Corriste el código y la terminal se quedó "colgada", no volvía a aparecer el prompt.
 Después abriste el navegador en http://127.0.0.1:3000/ y viste "¡Hola Mundo!". 
@@ -56,7 +56,7 @@ Para recordar: http = servidor, queda corriendo, responde peticiones
 
 
 
-📁 os (Sistema Operativo)
+# 📁 os (Sistema Operativo)
 
 En tu práctica: Al ejecutarlo, en la consola apareció un montón de información: arquitectura de tu PC, 
 tipo de Windows, cuánta memoria RAM tenés, cuánta está libre, y datos detallados del procesador.
@@ -68,7 +68,7 @@ Para recordar: os = muestra info del sistema, no modifica nada
 
 
 
-📁 events (Sistema de eventos)
+# 📁 events (Sistema de eventos)
 
 En tu práctica: Primero hiciste un ejemplo simple con un solo console.log y te pareció raro porque con 
 una función común era más fácil. Después hiciste el ejemplo donde un solo emisor.emit('saludo', 'Maty') 
