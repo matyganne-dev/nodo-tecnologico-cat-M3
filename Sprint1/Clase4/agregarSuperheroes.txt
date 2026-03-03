@@ -1,0 +1,87 @@
+[
+    {
+        "id": 4,
+        "nombreSuperheroe": "Batman",
+        "nombreReal": "Bruce Wayne",
+        "nombreSociedad": "Vigilante",
+        "edad": 35,
+        "planetaOrigen": "Tierra",
+        "debilidad": "Humano sin poderes",
+        "poder": [
+            "Inteligencia superior",
+            "Artes marciales",
+            "Detective experto"
+        ],
+        "habilidadEspecial": "Gadgets y tecnología",
+        "aliado": [
+            "Robin"
+        ],
+        "enemigo": [
+            "Joker"
+        ]
+    },
+    {
+        "id": 5,
+        "nombreSuperheroe": "Superman",
+        "nombreReal": "Clark Kent",
+        "nombreSociedad": "Héroe",
+        "edad": 32,
+        "planetaOrigen": "Krypton",
+        "debilidad": "Kryptonita",
+        "poder": [
+            "Superfuerza",
+            "Vuelo",
+            "Visión láser",
+            "Supervelocidad"
+        ],
+        "habilidadEspecial": "Soplo de hielo",
+        "aliado": [
+            "Lois Lane"
+        ],
+        "enemigo": [
+            "Lex Luthor"
+        ]
+    },
+    {
+        "id": 6,
+        "nombreSuperheroe": "Mujer Maravilla",
+        "nombreReal": "Diana Prince",
+        "nombreSociedad": "Princesa Amazona",
+        "edad": 800,
+        "planetaOrigen": "Tierra (Themyscira)",
+        "debilidad": "Puede ser atada por un hombre si pierde la fe",
+        "poder": [
+            "Superfuerza",
+            "Vuelo",
+            "Agilidad divina"
+        ],
+        "habilidadEspecial": "Lazo de la Verdad",
+        "aliado": [
+            "Steve Trevor"
+        ],
+        "enemigo": [
+            "Ares"
+        ]
+    },
+    {
+        "id": 7,
+        "nombreSuperheroe": "Wolverine",
+        "nombreReal": "Logan",
+        "nombreSociedad": "X-Men",
+        "edad": 150,
+        "planetaOrigen": "Tierra",
+        "debilidad": "Adamantium",
+        "poder": [
+            "Factor de curación",
+            "Garras retráctiles",
+            "Sentidos agudizados"
+        ],
+        "habilidadEspecial": "Esqueleto de adamantium",
+        "aliado": [
+            "Xavier"
+        ],
+        "enemigo": [
+            "Sabretooth"
+        ]
+    }
+]
