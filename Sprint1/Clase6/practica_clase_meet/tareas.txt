@@ -1,0 +1,32 @@
+[
+    {
+        "id":1,
+        "titulo": "Comprar leche",
+        "descripcion": "Ir al supermercado a comprar leche",
+        "completado": false
+    },
+    {
+        "id":2,
+        "titulo": "Pasear al perro",
+        "descripcion": "Sacar a pasear al perro por el parque",
+        "completado": false
+    },
+    {
+        "id":3,
+        "titulo": "Ejercicio de Node",
+        "descripcion": "Terminar ejercicio de Node con Express",
+        "completado": false
+    },
+    {
+        "id":4,
+        "titulo": "Leer documentacion",
+        "descripcion": "Leer la documentacion de Express 5",
+        "completado": true
+    },
+    {
+        "id":5,
+        "titulo": "Nueva tarea",
+        "descripcion": "Descripcion de la nueva tarea",
+        "completado": false
+    }
+]
