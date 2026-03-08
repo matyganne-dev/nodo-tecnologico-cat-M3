@@ -1,5 +1,5 @@
-import {obtenerSuperheroePorId, buscarSuperHeroesPorAtributo, obtenerSuperheroesMayoresDe30} from '../services/superheroesService.mjs';
-import { renderizarSuperheroe, renderrizarSuperheroes } from '../views/responseView.mjs';
+import { obtenerSuperheroePorId, buscarSuperHeroesPorAtributo, obtenerSuperheroesMayoresDe30 } from '../services/superheroesService.mjs';
+import { renderizarSuperheroe, renderizarSuperheroes } from '../view/responseView.mjs';
 
 export function obtenerSuperheroePorIdController(req, res){
     const {id} = req.params;
@@ -15,7 +15,7 @@ export function buscarSuperheroesPorAtributoController(req, res){
     const {atributo, valor} = req.params;
     const superheroes = buscarSuperHeroesPorAtributo(atributo, valor);
     if(superheroes.length > 0){
-        res.send(renderrizarSuperheroes(superheroes));
+        res.send(renderizarSuperheroes(superheroes));
     } else {
         res.status(404).send('No se encontraron superhéroes con ese atributo y valor');
     }
