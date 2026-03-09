@@ -15,8 +15,14 @@ import path from 'path';
 
 // esto hace que el codigo funcione tanto en Windows como en Linux, ya que obtiene la ruta del 
 // archivo actual de manera dinamica, sin importar el sistema operativo.
+
+// "file:///C:/proyectos/mi-app/src/tareasDataSource.mjs" se convierte a "C:/proyectos/mi-app/src/tareasDataSource.mjs"
 const archivoActual = fileURLToPath(import.meta.url); // ruta del archivo actual en formato URL, se convierte a ruta de archivo con fileURLToPath ejemplo: "file:///C:/proyectos/mi-app/src/tareasDataSource.mjs" se convierte a "C:/proyectos/mi-app/src/tareasDataSource.mjs"
+
+// "C:/proyectos/mi-app/src" en lugar de "C:/proyectos/mi-app/src/tareasDataSource.mjs"
 const carpetaActual = path.dirname(archivoActual); // carpeta del archivo actual en formato de ruta de archivo, se obtiene con path.dirname, que devuelve la parte de la ruta sin el nombre del archivo ejemplo: "C:/proyectos/mi-app/src" en lugar de "C:/proyectos/mi-app/src/tareasDataSource.mjs"
+
+// "C:/proyectos/mi-app/tareas.txt"
 const rutaAlArchivo = path.join(carpetaActual, "..", "tareas.txt") // ruta al archivo txt que simula la base de datos ejemplo: "C:/proyectos/mi-app/tareas.txt" se obtiene con path.join, que une las partes de la ruta de manera correcta para el sistema operativo, en este caso se sube un nivel con ".." para salir de la carpeta src y luego se agrega el nombre del archivo "tareas.txt"
 
 
@@ -31,4 +37,12 @@ export function leerTareas() {
         if (error.code === 'ENOENT') return []; // si el archivo no existe, devuelve un array vacio
         throw error; // si ocurre otro error, lo lanza para que se maneje en otro lugar
     }
+}
+
+// Escribir todas las tareas al archivo (reemplaza el contenido completo)
+// Recibe un array de objetos y lo guarda como JSON en el archivo 
+
+export function escribirTareas(tareas){
+    const contenido = JSON.stringify(tareas, null, 2); // convierte el array de objetos a texto JSON con formato legible
+    fs.writeFileSync(rutaAlArchivo, contenido, { encoding: 'utf8'}); // escribe el contenido en el archivo, creando el archivo si no existe, y reemplazando el contenido si ya existe
 }
