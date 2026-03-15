@@ -12,7 +12,7 @@ export function obtenerSuperheroePorIdController(req, res){
 }
 
 export function buscarSuperheroesPorAtributoController(req, res){
-    const {atributo, valor} = req.params;
+    const {atributo, valor} = req.query;
     const superheroes = buscarSuperHeroesPorAtributo(atributo, valor);
     if(superheroes.length > 0){
         res.send(renderizarSuperheroes(superheroes));
@@ -23,5 +23,5 @@ export function buscarSuperheroesPorAtributoController(req, res){
 
 export function obtenerSuperheroesMayoresDe30Controller(req, res){
     const superheroes = obtenerSuperheroesMayoresDe30();
-    res.send(renderizarListaSuperheroes(superheroes));
+    res.send(renderizarSuperheroes(superheroes));
 }
