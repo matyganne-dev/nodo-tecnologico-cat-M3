@@ -1,4 +1,7 @@
 
+//Cargar variables de entorno desde el archivo .env
+import 'dotenv/config';
+
 // Importamos la función setServers del módulo 'dns/promises' de Node.js
 // Esta función nos permite cambiar los servidores DNS que usa Node.js
 import { setServers } from 'node:dns/promises';
@@ -12,7 +15,16 @@ import mongoose from 'mongoose';
 // que son confiables y universales
 setServers(["1.1.1.1", "8.8.8.8"]);
 
-mongoose.connect('mongodb+srv://unimaty10:BDmatyprueba10@cluster0.64dpheo.mongodb.net/Node-js')
+//Leer la URI de conexión desde el archivo .env
+const MONGODB_URI = process.env.MONGODB_URI;
+
+//Verificar que la variable se cargó correctamente
+if (!MONGODB_URI) {
+    console.error('❌ ERROR: No se encontró MONGODB_URI en el archivo .env');
+    process.exit(1); // Detiene la ejecución
+}
+
+mongoose.connect(MONGODB_URI)
     .then(() => console.log('Conexion exitosa a MongoDB'))
     .catch((error) => console.error('Error al conectar a MongoDB:', error));
 
