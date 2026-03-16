@@ -53,3 +53,16 @@ async function insertSuperHero() {
 }
 
 insertSuperHero();
+
+
+//funcion para actualizar el heroe
+
+async function updateSuperHero(nombreSuperHeroe) {
+    const result = await SuperHero.updateOne(
+        { nombreSuperHeroe: nombreSuperHeroe },
+        { $set: { edad: 26 } }
+    );
+    console.log('Resultado de la actualizacion', result);
+}
+
+updateSuperHero('Spiderman');
