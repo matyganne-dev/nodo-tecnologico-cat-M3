@@ -69,9 +69,19 @@ updateSuperHero('Spiderman');
 
 //Eliminar un heroe de la coleccion
 
-async function deleteSuperHero(nombreSuperHeroe){
-        const result = await SuperHero.deleteOne({ nombreSuperHeroe: nombreSuperHeroe });
-        console.log('Superheroe eliminado', result);
+async function deleteSuperHero(nombreSuperHeroe) {
+    const result = await SuperHero.deleteOne({ nombreSuperHeroe: nombreSuperHeroe });
+    console.log('Superheroe eliminado', result);
 }
 
 deleteSuperHero('Spiderman');
+
+
+//Funcion para buscar hereo por medio de alguna propiedad
+
+async function findSuperHeroes() {
+    const heroes = await SuperHero.find({ planetaOrigen: 'Tierra' });
+    console.log('Superheroes encontrados:', heroes);
+}
+
+findSuperHeroes();
