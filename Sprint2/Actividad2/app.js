@@ -66,3 +66,12 @@ async function updateSuperHero(nombreSuperHeroe) {
 }
 
 updateSuperHero('Spiderman');
+
+//Eliminar un heroe de la coleccion
+
+async function deleteSuperHero(nombreSuperHeroe){
+        const result = await SuperHero.deleteOne({ nombreSuperHeroe: nombreSuperHeroe });
+        console.log('Superheroe eliminado', result);
+}
+
+deleteSuperHero('Spiderman');
