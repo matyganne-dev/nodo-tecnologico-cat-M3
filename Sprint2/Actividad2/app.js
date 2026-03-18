@@ -16,7 +16,7 @@ import mongoose from 'mongoose';
 setServers(["1.1.1.1", "8.8.8.8"]);
 
 //Leer la URI de conexión desde el archivo .env
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = 'mongodb+srv://grupo-06:grupo-06@cluster0.blryo.mongodb.net/NodeMod3Cohorte5';
 
 //Verificar que la variable se cargó correctamente
 if (!MONGODB_URI) {
@@ -42,7 +42,7 @@ const superheroSchema = new mongoose.Schema({
     enemigos: [String],
     createdAt: { type: Date, default: Date.now },
     creator: String
-}, { collection: 'Grupo-xx' });
+}, { collection: 'Grupo-06' });
 
 const SuperHero = mongoose.model('SuperHero', superheroSchema);
 
