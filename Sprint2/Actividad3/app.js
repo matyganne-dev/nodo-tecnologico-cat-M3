@@ -2,7 +2,7 @@
 import express from 'express';
 import { setServers } from 'node:dns/promises';
 import { connecBD } from './src/config/dbConfig.mjs';
-import superHeroRoutes from './routes/superHeroRoutes.mjs';
+import superHeroRoutes from './src/routes/superHeroRoutes.mjs';
 setServers(["1.1.1.1", "8.8.8.8"]);
 
 const app = express();
@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Conexión a MongoDB
-connectDB();
+connecBD();
 
 // Configuración de rutas
 app.use('/api', superHeroRoutes);
