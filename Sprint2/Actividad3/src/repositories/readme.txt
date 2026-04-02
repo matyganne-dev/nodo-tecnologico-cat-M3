@@ -78,3 +78,33 @@ Usa el operador $gt (mayor que) para filtrar edades mayores a 30.
 Exportación:
 Exporta una instancia ya creada, no la clase. Así se usa directamente sin instanciar cada vez.
 
+
+
+Repositorio en MVC - Descripción General
+¿Qué son?
+Son la capa que ejecuta las operaciones sobre los datos. Contienen toda la lógica de acceso a la base de datos.
+
+¿Qué hacen?
+
+Guardan datos en la base de datos
+
+Buscan datos según diferentes criterios
+
+Actualizan registros existentes
+
+Eliminan datos de la base
+
+Centralizan todas las consultas en un solo lugar
+
+¿Por qué se usan?
+
+Separan la lógica de consultas del controlador
+
+Evitan repetir el mismo código de búsqueda en varios lugares
+
+Facilitan cambiar de base de datos si es necesario
+
+Hacen más fácil probar el código (testing)
+
+En pocas palabras:
+El Repositorio es el encargado de decir "cómo se hace" para guardar, buscar, actualizar o eliminar datos. Es el que manipula la información usando los Modelos.
