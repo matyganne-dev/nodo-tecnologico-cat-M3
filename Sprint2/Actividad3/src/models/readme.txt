@@ -27,6 +27,22 @@ de ahi los demas campos son auto explicativos ya que con esto damos un pantallaz
 
 PASO 3
 luego creamos una constante "superHero" la cual convierte el molde en un modelo que mongoose puede usar.
+const superHero = mongoose.model('SuperHero', superheroSchema, 'Grupo-06');
+
+mongoose.model() : Es un metodo de Mongoose que crea un modelo (Es como una "clase" que me permite interactuar con una coleccion)
+
+Luego tenemos 3 parametros 'SuperHero', superheroSchema y 'Grupo-06'
+
+'SuperHero': nombre del modelo. define como se llamara la coleccion en Mongodb, referencia a otras partes del codigo, normalmente 
+se usa en singular con mayuscula inicial.
+
+superheroSchema: esquema de nuestro modelo. es la estructura de nuestro documento. que campos tiene cada superheroe, que tipos de 
+datos, validaciones, valores por defecto, etc.
+
+'Grupo-06': Este es el nombre explicito de la conleccion en MongoDB. sin este paremetro , mongoose buscaria automaticame una 
+coleccion llamada superheroes (plurizando el nombre del modelo 'SuperHero') en minuscula.
+al especificar 'Grupo-06', le estoy diciendo: "usa exactamente esta coleccion en la base de datos".
+
 
 Le decimos que se va a llamar como nuestra constante, que utilice el esquema que establecimos y que guarde los 
 documentos en una colleccion llamada en este caso "Grupo-xx" que representa mi grupo, en esta caso "Grupo-06"
@@ -35,7 +51,7 @@ documentos en una colleccion llamada en este caso "Grupo-xx" que representa mi g
 
 PASO 4
 Exportamos el modelo para poder usarlo en otros archivos, por ejemplo cuando queramos buscar, guardar o modificar 
-uperhéroes desde nuestro servidor.
+superhéroes desde nuestro servidor.
 
 
 
