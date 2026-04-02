@@ -6,7 +6,9 @@ IRepository----------------------------
 
 Paso 1
 Creamos una clase llamada IRepository. La "I" hace referencia a que es una interface (tambien podemos decir que es una convencion).
-esta clase no hace nada por si sola, solo sirve como plantilla para que otras clases la hereden.
+esta clase no hace nada por si sola, solo sirve como plantilla o contrato para que otras clases la hereden.
+al tener una herencia de esta interfaz aseguramos que cualquier clase que la implemente cuente con estos metodos, de caso contrario
+saldria un error por le throw alertando al programador de que debe de agregar el metodo.
 
 Paso 2
 Definimos metodos
