@@ -2,7 +2,11 @@ import {
     obtenerSuperheroePorId, 
     obtenerTodosLosSuperheroes, 
     buscarSuperheroesPorAtributo, 
-    obtenerSuperheroesMayoresDe30 
+    obtenerSuperheroesMayoresDe30,
+    crearSuperheroe,
+    actualizarSuperheroe,
+    borrarSuperheroe,
+    borrarSuperheroePorNombre
 } from '../services/superheroesService.mjs';
 import { renderizarSuperheroe, renderizarListaSuperheroes } from '../views/responseView.mjs';
 
@@ -60,5 +64,66 @@ export async function obtenerSuperheroesMayoresDe30Controller(req, res) {
         res.status(200).json(superheroesFormateados);
     } catch (error) {
         res.status(500).send({ mensaje: 'Error al obtener superhéroes mayores de 30', error: error.message });
+    }
+}
+
+//POST
+export async function crearSuperheroeController(req, res) {
+    try {
+        const nuevoSuperheroe = await crearSuperheroe(req.body);
+        const superheroeFormateado = renderizarSuperheroe(nuevoSuperheroe);
+        res.status(201).json(superheroeFormateado);
+    } catch (error) {
+        res.status(500).send({ mensaje: 'Error al crear el superheroe', error: error.message });
+    }
+}
+
+//PUT
+export async function actualizarSuperheroeController(req, res) {
+    try {
+        const { id } = req.params;
+        const superheroeActualizado = await actualizarSuperheroe(id, req.body);
+        
+        if (!superheroeActualizado) {
+            return res.status(404).send({ mensaje: 'Superhroe no encontrado para actualizar' });
+        }
+
+        const superheroeFormateado = renderizarSuperheroe(superheroeActualizado);
+        res.status(200).json(superheroeFormateado);
+    } catch (error) {
+        res.status(500).send({ mensaje: 'Error al actualizar el superheroe', error: error.message });
+    }
+}
+
+//DELETE
+export async function borrarSuperheroeController(req, res) {
+    try {
+        const { id } = req.params;
+        const superheroeBorrado = await borrarSuperheroe(id);
+        
+        if (!superheroeBorrado) {
+            return res.status(404).send({ mensaje: 'Superheroe no encontrado para borrar' });
+        }
+
+        const superheroeFormateado = renderizarSuperheroe(superheroeBorrado);
+        res.status(200).json(superheroeFormateado);
+    } catch (error) {
+        res.status(500).send({ mensaje: 'Error al borrar el superheroe', error: error.message });
+    }
+}
+
+export async function borrarSuperheroePorNombreController(req, res) {
+    try {
+        const { nombre } = req.params;
+        const superheroeBorrado = await borrarSuperheroePorNombre(nombre);
+        
+        if (!superheroeBorrado) {
+            return res.status(404).send({ mensaje: 'Superheroe no encontrado para borrar por nombre' });
+        }
+
+        const superheroeFormateado = renderizarSuperheroe(superheroeBorrado);
+        res.status(200).json(superheroeFormateado);
+    } catch (error) {
+        res.status(500).send({ mensaje: 'Error al borrar el superheroe por nombre', error: error.message });
     }
 }
