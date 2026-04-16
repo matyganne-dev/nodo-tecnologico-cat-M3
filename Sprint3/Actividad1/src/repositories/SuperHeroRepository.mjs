@@ -21,6 +21,31 @@ class SuperHeroRepository extends IRepository {
             $expr: { $gte: [{ $size: "$poderes" }, 2] } //$expr permite usar expresiones de agregación, $size: "$poderes"  cuenta los elementos de un array, $gte: [..., 2], verifica que el tamaño sea mayor o igual
         });
     }
+
+
+    //POST
+    //creacion de nuevo superheroe
+    async crear(datos) {
+        return await SuperHero.create(datos);
+    }
+
+    //PUT
+    //Actualizar un superheroe por su ID
+    async actualizar(id, datos) {
+        return await SuperHero.findByIdAndUpdate(id, datos, { new: true });
+    }
+
+    //DELETE
+    // Borrar un superheroe por ID 
+    async borrarPorId(id) {
+        return await SuperHero.findByIdAndDelete(id);
+    }
+
+    // Borrar un superheroe por su nombre 
+    async borrarPorNombre(nombre) {
+        return await SuperHero.findOneAndDelete({ nombreSuperHeroe: nombre });
+    }
+
 }
 
 export default new SuperHeroRepository();
