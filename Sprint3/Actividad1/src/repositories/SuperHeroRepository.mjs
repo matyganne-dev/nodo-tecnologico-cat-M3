@@ -15,7 +15,11 @@ class SuperHeroRepository extends IRepository {
     }
 
     async obtenerMayoresDe30() {
-        return await SuperHero.find({ edad: { $gt: 30 } });
+        return await SuperHero.find({
+            edad: { $gt: 30 }, // Busca en edad, mayores a 30. $gt (mayor que)
+            planetaOrigen: 'Tierra', // Coincidencia exacta
+            $expr: { $gte: [{ $size: "$poderes" }, 2] } //$expr permite usar expresiones de agregación, $size: "$poderes"  cuenta los elementos de un array, $gte: [..., 2], verifica que el tamaño sea mayor o igual
+        });
     }
 }
 
