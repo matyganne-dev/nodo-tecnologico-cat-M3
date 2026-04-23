@@ -1,12 +1,14 @@
 import express from 'express';
-import { validarSuperheroe } from '../validators/superHeroValidator.mjs'; 
+import { validarSuperheroe } from '../validators/superHeroValidator.mjs';
 import { handleValidationErrors } from '../middlewares/errorHandler.mjs';
 import {
     obtenerTodosLosSuperheroesController,
     crearSuperheroeController,
     obtenerSuperheroePorIdController,
     obtenerSuperheroesMayoresDe30Controller,
-    buscarSuperheroesPorAtributoController
+    buscarSuperheroesPorAtributoController,
+    editarSuperheroeFormController,
+    actualizarSuperheroeController
 } from '../controllers/superheroesController.mjs';
 
 const router = express.Router();
@@ -23,10 +25,21 @@ router.get('/agregar', (req, res) => {
 });
 
 // POST /heroes/agregar -> Procesar los datos del formulario y crear el héroe
-router.post('/agregar', 
+router.post('/agregar',
     validarSuperheroe, // 1 Inspecciona y anotamo los errores
     handleValidationErrors, // 2 Revisa req y decide si pasa al controlador
     crearSuperheroeController // 3 pasa al controlador y continua con el proceso
+);
+
+
+// GET /heroes/:id/editar -> Muestra el formulario con los datos precargados (Etapa 4)
+router.get('/:id/editar', editarSuperheroeFormController);
+
+// PUT /heroes/:id/editar -> Procesa la actualización (Etapa 4)
+router.put('/:id/editar', 
+    validarSuperheroe, 
+    handleValidationErrors, 
+    actualizarSuperheroeController
 );
 
 
