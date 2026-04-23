@@ -1,0 +1,41 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Superhéroes</title>
+</head>
+<body>
+    <h1>Lista de Superhéroes</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Nombre Real</th>
+                <th>Edad</th>
+                <th>Poderes</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% superheroes.forEach(heroe => { %>
+                <tr>
+                    <td><%= heroe.Nombre %></td>
+                    <td><%= heroe["Nombre Real"] %></td>
+                    <td><%= heroe.Edad %></td>
+                    <td><%= heroe.Poderes.join(', ') %></td>
+                    <td>
+                        <a href="#">Editar</a> | 
+                        <a href="#">Eliminar</a>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>
