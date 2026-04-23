@@ -84,20 +84,37 @@ export async function crearSuperheroeController(req, res) {
     }
 }
 
+// GET: Mostrar formulario de edición con datos precargados
+export async function editarSuperheroeFormController(req, res) {
+    try {
+        // Captura el parámetro :id de la ruta 
+        const { id } = req.params; 
+        // Llama al servicio 
+        const superheroe = await obtenerSuperheroePorId(id); 
+        
+        if (!superheroe) {
+            return res.status(404).send({ mensaje: 'Superhéroe no encontrado' });
+        }
+
+        // Renderizamos la vista de edición pasando el objeto del héroe
+        res.render('editSuperhero', { heroe: superheroe });
+    } catch (error) {
+        res.status(500).send({ mensaje: 'Error al cargar el formulario de edición', error: error.message });
+    }
+}
+
+
 //PUT
 export async function actualizarSuperheroeController(req, res) {
     try {
         const { id } = req.params;
-        const superheroeActualizado = await actualizarSuperheroe(id, req.body);
+        // El service se encarga de actualizar en la DB
+        await actualizarSuperheroe(id, req.body);
         
-        if (!superheroeActualizado) {
-            return res.status(404).send({ mensaje: 'Superhroe no encontrado para actualizar' });
-        }
-
-        const superheroeFormateado = renderizarSuperheroe(superheroeActualizado);
-        res.status(200).json(superheroeFormateado);
+        // Redirigimos al dashboard para ver los cambios (Etapa 4)
+        res.redirect('/heroes');
     } catch (error) {
-        res.status(500).send({ mensaje: 'Error al actualizar el superheroe', error: error.message });
+        res.status(500).send({ mensaje: 'Error al actualizar el superhéroe', error: error.message });
     }
 }
 
