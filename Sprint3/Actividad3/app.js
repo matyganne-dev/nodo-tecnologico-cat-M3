@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 3005;
 
 
 //(ETAPA 2) -> configuracion EJS
+//Se establece el motor de plantillas ejs
 app.set('view engine', 'ejs');
 // Esta línea sirve para encontrar la carpeta correctamente
 app.set('views', './src/views');
@@ -17,11 +18,17 @@ app.set('views', './src/views');
 // Middleware para parsear JSON
 app.use(express.json());
 
+//(ETAPA 3) -> Middleware para parsear datos de formularios (Vistas EJS)
+//recibe el texto y lo convierte a un objeto javascript
+app.use(express.urlencoded({ extended: true }));
+
 // Conexión a MongoDB
 connecBD();
 
-// Configuración de rutas
-app.use('/api', superHeroRoutes);
+// Configuración de rutas modificado
+// Antes: app.use('/api', superHeroRoutes);
+// Ahora: Según el enunciado (Etapa 2 y 3)
+app.use('/heroes', superHeroRoutes);
 
 // Manejo de errores para rutas no encontradas
 app.use((req, res) => {
