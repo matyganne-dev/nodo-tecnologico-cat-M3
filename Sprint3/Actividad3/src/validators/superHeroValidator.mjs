@@ -23,6 +23,12 @@
 
     .withMessage('...'): Es el mensaje de error que explica qué falló.
 
+    express-validator: Middleware para asegurar que los datos que entran a la base de datos son válidos.
+
+    .customSanitizer(): Herramienta para transformar datos de entrada antes de que lleguen al controlador.
+
+    req.body: Objeto que contiene los datos del formulario procesados por urlencoded.
+
     A diferencia de C typeof en js lo usamos para preguntar, en c lo usabamos para definir.
 
 
@@ -79,11 +85,17 @@ export const validarSuperheroe = [
 
     // Validación de poderes (Array de strings)
     body('poderes')
-        .isArray({ min: 1 }).withMessage('Poderes debe ser un array con al menos un elemento')
+        .customSanitizer(value => {
+            // Si es un string (viene del formulario), lo convertimos en array
+            if (typeof value === 'string') {
+                return value.split(',').map(poder => poder.trim()).filter(poder => poder.length > 0);
+            }
+            return value;
+        })
+        .isArray({ min: 1 }).withMessage('Poderes debe tener al menos un elemento')
         .custom((value) => {
-            // Validamos cada elemento del array según el enunciado
-            if (!value.every(poder => typeof poder === 'string' && poder.trim().length >= 3 && poder.trim().length <= 60)) {
-                throw new Error('Cada poder debe ser un texto de 3 a 60 caracteres sin espacios vacíos');
+            if (!value.every(poder => typeof poder === 'string' && poder.trim().length >= 3)) {
+                throw new Error('Cada poder debe tener al menos 3 caracteres');
             }
             return true;
         })
