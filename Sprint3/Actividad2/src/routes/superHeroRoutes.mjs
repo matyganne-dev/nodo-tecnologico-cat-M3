@@ -1,4 +1,6 @@
 import express from 'express';
+import { validarSuperheroe } from '../validators/superHeroValidator.mjs'; 
+import { handleValidationErrors } from '../middlewares/errorHandler.mjs';
 import {
     obtenerSuperheroePorIdController,
     obtenerTodosLosSuperheroesController,
@@ -18,12 +20,21 @@ router.get('/superheroes/edad/mayorA30', obtenerSuperheroesMayoresDe30Controller
 router.get('/superheroes/atributo/:atributo/:valor', buscarSuperheroesPorAtributoController);
 router.get('/superheroes/id/:id', obtenerSuperheroePorIdController);
 
-//POST
-router.post('/superheroes', crearSuperheroeController);
 
-//PUT
-//actualizacion superheroe ID
-router.put('/superheroes/id/:id', actualizarSuperheroeController);
+
+// POST: Crear un nuevo superhroe
+router.post('/superheroes', 
+    validarSuperheroe,      // 1 Inspecciona y anotamo los errores 
+    handleValidationErrors, // 2 Revisa req y decide si pasa al controlador
+    crearSuperheroeController // 3 pasa al controlador y continua con el proceso 
+);
+
+// PUT: Actualizar un superheroe por ID
+router.put('/superheroes/id/:id', 
+    validarSuperheroe, 
+    handleValidationErrors, 
+    actualizarSuperheroeController
+);
 
 //DELETE
 
