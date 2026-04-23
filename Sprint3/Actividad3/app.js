@@ -8,6 +8,10 @@ setServers(["1.1.1.1", "8.8.8.8"]);
 const app = express();
 const PORT = process.env.PORT || 3005;
 
+
+//(ETAPA 2) -> configuracion EJS
+app.set('view engine', 'ejs');
+
 // Middleware para parsear JSON
 app.use(express.json());
 
