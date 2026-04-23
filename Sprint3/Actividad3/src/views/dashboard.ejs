@@ -31,7 +31,11 @@
                     <td><%= heroe.Poderes.join(', ') %></td>
                     <<td>
                         <a href="/heroes/<%= heroe.id %>/editar">Editar</a> | 
-                        <a href="#">Eliminar</a>
+                        <form action="/heroes/<%= heroe.id %>?_method=DELETE" method="POST">
+                            <button type="submit" onclick="return confirm('¿Seguro que querés eliminar este superhéroe?')">
+                                Eliminar
+                            </button>
+                        </form>
                     </td>
                 </tr>
             <% }); %>
