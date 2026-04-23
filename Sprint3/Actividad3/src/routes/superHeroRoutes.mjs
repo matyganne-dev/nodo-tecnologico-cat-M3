@@ -8,7 +8,8 @@ import {
     obtenerSuperheroesMayoresDe30Controller,
     buscarSuperheroesPorAtributoController,
     editarSuperheroeFormController,
-    actualizarSuperheroeController
+    actualizarSuperheroeController,
+    borrarSuperheroeController
 } from '../controllers/superheroesController.mjs';
 
 const router = express.Router();
@@ -41,6 +42,9 @@ router.put('/:id/editar',
     handleValidationErrors, 
     actualizarSuperheroeController
 );
+
+// DELETE /heroes/:id -> Eliminar superhéroe
+router.delete('/:id', borrarSuperheroeController);
 
 
 // RUTAS DE CONSULTA (Mantenidas del TP 2) despues de la limpieza
