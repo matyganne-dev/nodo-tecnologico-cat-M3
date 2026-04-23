@@ -86,14 +86,15 @@ export const validarSuperheroe = [
     // Validación de poderes (Array de strings)
     body('poderes')
         .customSanitizer(value => {
-            // Si es un string (viene del formulario), lo convertimos en array
+            // Si es un string, lo convertimos en array. Si ya es array, lo devolvemos.
             if (typeof value === 'string') {
-                return value.split(',').map(poder => poder.trim()).filter(poder => poder.length > 0);
+                return value.split(',').map(p => p.trim()).filter(p => p.length > 0);
             }
-            return value;
+            return Array.isArray(value) ? value : [];
         })
         .isArray({ min: 1 }).withMessage('Poderes debe tener al menos un elemento')
         .custom((value) => {
+            // Validamos que cada elemento tenga al menos 3 caracteres
             if (!value.every(poder => typeof poder === 'string' && poder.trim().length >= 3)) {
                 throw new Error('Cada poder debe tener al menos 3 caracteres');
             }

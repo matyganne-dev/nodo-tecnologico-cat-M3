@@ -4,9 +4,6 @@ import { handleValidationErrors } from '../middlewares/errorHandler.mjs';
 import {
     obtenerTodosLosSuperheroesController,
     crearSuperheroeController,
-    obtenerSuperheroePorIdController,
-    obtenerSuperheroesMayoresDe30Controller,
-    buscarSuperheroesPorAtributoController,
     editarSuperheroeFormController,
     actualizarSuperheroeController,
     borrarSuperheroeController
@@ -17,45 +14,32 @@ const router = express.Router();
 
 // RUTAS DEL DASHBOARD (TP 3 - Etapas 2 y 3) despues de la limpieza
 
-// GET /heroes/ -> Ver la lista principal (Dashboard)
-router.get('/', obtenerTodosLosSuperheroesController);
+// Lista principal (dashboard)
+router.get('/', obtenerTodosLosSuperheroesController); 
 
-// GET /heroes/agregar -> Ver el formulario de alta
+// Formulario de agregar 
 router.get('/agregar', (req, res) => {
-    res.render('addSuperhero');
+    res.render('addSuperhero'); 
 });
 
-// POST /heroes/agregar -> Procesar los datos del formulario y crear el héroe
+// Procesar alta
 router.post('/agregar',
-    validarSuperheroe, // 1 Inspecciona y anotamo los errores
-    handleValidationErrors, // 2 Revisa req y decide si pasa al controlador
-    crearSuperheroeController // 3 pasa al controlador y continua con el proceso
+    validarSuperheroe, 
+    handleValidationErrors, 
+    crearSuperheroeController 
 );
 
-
-// GET /heroes/:id/editar -> Muestra el formulario con los datos precargados (Etapa 4)
+// Formulario de edición (Etapa 4)
 router.get('/:id/editar', editarSuperheroeFormController);
 
-// PUT /heroes/:id/editar -> Procesa la actualización (Etapa 4)
+// Procesar edición (Se usa PUT gracias a method-override)
 router.put('/:id/editar', 
     validarSuperheroe, 
     handleValidationErrors, 
-    actualizarSuperheroeController
+    actualizarSuperheroeController 
 );
 
-// DELETE /heroes/:id -> Eliminar superhéroe
+// Eliminar (Etapa 5)
 router.delete('/:id', borrarSuperheroeController);
-
-
-// RUTAS DE CONSULTA (Mantenidas del TP 2) despues de la limpieza
-
-// GET /heroes/edad/mayorA30
-router.get('/edad/mayorA30', obtenerSuperheroesMayoresDe30Controller);
-
-// GET /heroes/atributo/:atributo/:valor
-router.get('/atributo/:atributo/:valor', buscarSuperheroesPorAtributoController);
-
-// GET /heroes/id/:id
-router.get('/id/:id', obtenerSuperheroePorIdController);
 
 export default router;
