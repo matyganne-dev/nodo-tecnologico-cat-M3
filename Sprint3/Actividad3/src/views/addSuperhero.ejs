@@ -1,0 +1,42 @@
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Superhéroe</title>
+</head>
+<body>
+    <h1>Nuevo Superhéroe</h1>
+    <form action="/api/superheroes" method="POST">
+        <div>
+            <label>Nombre del Superhéroe:</label>
+            <input type="text" name="nombreSuperHeroe" required>
+        </div>
+        <div>
+            <label>Nombre Real:</label>
+            <input type="text" name="nombreReal" required>
+        </div>
+        <div>
+            <label>Edad:</label>
+            <input type="number" name="edad" min="0" required>
+        </div>
+        <div>
+            <label>Planeta de Origen:</label>
+            <input type="text" name="planetaOrigen">
+        </div>
+        <div>
+            <label>Debilidad:</label>
+            <input type="text" name="debilidad">
+        </div>
+        <div>
+            <label>Poderes (separados por coma):</label>
+            <input type="text" name="poderes" placeholder="Volar, Fuerza, etc." required>
+        </div>
+        <br>
+        <button type="submit">Guardar Héroe</button>
+        <a href="/api/superheroes">Cancelar</a>
+    </form>
+</body>
+</html>
