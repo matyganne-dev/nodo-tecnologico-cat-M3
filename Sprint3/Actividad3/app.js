@@ -3,6 +3,7 @@ import express from 'express';
 import { setServers } from 'node:dns/promises';
 import { connecBD } from './src/config/dbConfig.mjs';
 import superHeroRoutes from './src/routes/superHeroRoutes.mjs';
+import methodOverride from 'method-override';
 setServers(["1.1.1.1", "8.8.8.8"]);
 
 const app = express();
@@ -21,6 +22,9 @@ app.use(express.json());
 //(ETAPA 3) -> Middleware para parsear datos de formularios (Vistas EJS)
 //recibe el texto y lo convierte a un objeto javascript
 app.use(express.urlencoded({ extended: true }));
+
+//Los formularios HTML nativos solo soportan GET y POST. Para usar un PUT real desde el navegador, tenemos que instalar un middleware llamado method-override
+app.use(methodOverride('_method'));
 
 // Conexión a MongoDB
 connecBD();
