@@ -1,0 +1,43 @@
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Superhéroe</title>
+</head>
+<body>
+    <h1>Editar Superhéroe: <%= heroe.nombreSuperHeroe %></h1>
+
+    <form action="/heroes/<%= heroe._id %>/editar?_method=PUT" method="POST">
+        <div>
+            <label>Nombre del Superhéroe:</label>
+            <input type="text" name="nombreSuperHeroe" value="<%= heroe.nombreSuperHeroe %>" required>
+        </div>
+        <div>
+            <label>Nombre Real:</label>
+            <input type="text" name="nombreReal" value="<%= heroe.nombreReal %>" required>
+        </div>
+        <div>
+            <label>Edad:</label>
+            <input type="number" name="edad" value="<%= heroe.edad %>" min="0" required>
+        </div>
+        <div>
+            <label>Planeta de Origen:</label>
+            <input type="text" name="planetaOrigen" value="<%= heroe.planetaOrigen %>">
+        </div>
+        <div>
+            <label>Debilidad:</label>
+            <input type="text" name="debilidad" value="<%= heroe.debilidad %>">
+        </div>
+        <div>
+            <label>Poderes (separados por coma):</label>
+            <input type="text" name="poderes" value="<%= heroe.poderes.join(', ') %>" required>
+        </div>
+        <br>
+        <button type="submit">Actualizar Cambios</button>
+        <a href="/heroes">Cancelar</a>
+    </form>
+</body>
+</html>
