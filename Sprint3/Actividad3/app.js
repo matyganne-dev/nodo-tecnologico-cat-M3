@@ -11,6 +11,8 @@ const PORT = process.env.PORT || 3005;
 
 //(ETAPA 2) -> configuracion EJS
 app.set('view engine', 'ejs');
+// Esta línea sirve para encontrar la carpeta correctamente
+app.set('views', './src/views');
 
 // Middleware para parsear JSON
 app.use(express.json());
