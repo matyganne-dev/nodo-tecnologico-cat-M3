@@ -26,13 +26,16 @@ export async function obtenerSuperheroePorIdController(req, res) {
     }
 }
 
+//modificacion para  renderizar el dashboard
 export async function obtenerTodosLosSuperheroesController(req, res) {
     try {
         const superheroes = await obtenerTodosLosSuperheroes();
         const superheroesFormateados = renderizarListaSuperheroes(superheroes);
-        res.status(200).json(superheroesFormateados);
+        // Renderizamos la vista 'dashboard' enviando el array de héroes
+        res.render('dashboard', { superheroes: superheroesFormateados });
     } catch (error) {
-        res.status(500).send({ mensaje: 'Error al obtener los superhéroes', error: error.message });
+        // En caso de error, enviamos un 500
+        res.status(500).send({ mensaje: 'Error al renderizar el dashboard', error: error.message });
     }
 }
 
