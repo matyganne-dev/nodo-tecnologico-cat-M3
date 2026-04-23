@@ -128,8 +128,8 @@ export async function borrarSuperheroeController(req, res) {
             return res.status(404).send({ mensaje: 'Superheroe no encontrado para borrar' });
         }
 
-        const superheroeFormateado = renderizarSuperheroe(superheroeBorrado);
-        res.status(200).json(superheroeFormateado);
+        // Redirigimos al dashboard para ver la lista actualizada
+        res.redirect('/heroes');
     } catch (error) {
         res.status(500).send({ mensaje: 'Error al borrar el superheroe', error: error.message });
     }
