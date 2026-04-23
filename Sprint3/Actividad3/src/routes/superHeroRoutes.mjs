@@ -2,46 +2,43 @@ import express from 'express';
 import { validarSuperheroe } from '../validators/superHeroValidator.mjs'; 
 import { handleValidationErrors } from '../middlewares/errorHandler.mjs';
 import {
-    obtenerSuperheroePorIdController,
     obtenerTodosLosSuperheroesController,
-    buscarSuperheroesPorAtributoController,
-    obtenerSuperheroesMayoresDe30Controller,
     crearSuperheroeController,
-    actualizarSuperheroeController,
-    borrarSuperheroeController,
-    borrarSuperheroePorNombreController
+    obtenerSuperheroePorIdController,
+    obtenerSuperheroesMayoresDe30Controller,
+    buscarSuperheroesPorAtributoController
 } from '../controllers/superheroesController.mjs';
 
 const router = express.Router();
 
-//Rutas (GET)
-router.get('/superheroes', obtenerTodosLosSuperheroesController);
-router.get('/superheroes/edad/mayorA30', obtenerSuperheroesMayoresDe30Controller);
-router.get('/superheroes/atributo/:atributo/:valor', buscarSuperheroesPorAtributoController);
-router.get('/superheroes/id/:id', obtenerSuperheroePorIdController);
 
+// RUTAS DEL DASHBOARD (TP 3 - Etapas 2 y 3) despues de la limpieza
 
+// GET /heroes/ -> Ver la lista principal (Dashboard)
+router.get('/', obtenerTodosLosSuperheroesController);
 
-// POST: Crear un nuevo superhroe
-router.post('/superheroes', 
-    validarSuperheroe,      // 1 Inspecciona y anotamo los errores 
+// GET /heroes/agregar -> Ver el formulario de alta
+router.get('/agregar', (req, res) => {
+    res.render('addSuperhero');
+});
+
+// POST /heroes/agregar -> Procesar los datos del formulario y crear el héroe
+router.post('/agregar', 
+    validarSuperheroe, // 1 Inspecciona y anotamo los errores
     handleValidationErrors, // 2 Revisa req y decide si pasa al controlador
-    crearSuperheroeController // 3 pasa al controlador y continua con el proceso 
+    crearSuperheroeController // 3 pasa al controlador y continua con el proceso
 );
 
-// PUT: Actualizar un superheroe por ID
-router.put('/superheroes/id/:id', 
-    validarSuperheroe, 
-    handleValidationErrors, 
-    actualizarSuperheroeController
-);
 
-//DELETE
+// RUTAS DE CONSULTA (Mantenidas del TP 2) despues de la limpieza
 
-//Eliminacion superheroe por ID
-router.delete('/superheroes/id/:id', borrarSuperheroeController);
+// GET /heroes/edad/mayorA30
+router.get('/edad/mayorA30', obtenerSuperheroesMayoresDe30Controller);
 
-//Eliminacion superheroe por Nombre
-router.delete('/superheroes/nombre/:nombre', borrarSuperheroePorNombreController);
+// GET /heroes/atributo/:atributo/:valor
+router.get('/atributo/:atributo/:valor', buscarSuperheroesPorAtributoController);
+
+// GET /heroes/id/:id
+router.get('/id/:id', obtenerSuperheroePorIdController);
 
 export default router;
