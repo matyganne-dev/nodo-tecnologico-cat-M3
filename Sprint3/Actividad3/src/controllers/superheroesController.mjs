@@ -71,13 +71,16 @@ export async function obtenerSuperheroesMayoresDe30Controller(req, res) {
 }
 
 //POST
+// ETAPA 3: Crear superhéroe y Redirigir
 export async function crearSuperheroeController(req, res) {
     try {
-        const nuevoSuperheroe = await crearSuperheroe(req.body);
-        const superheroeFormateado = renderizarSuperheroe(nuevoSuperheroe);
-        res.status(201).json(superheroeFormateado);
+        // Los datos vienen del formulario gracias a urlencoded
+        await crearSuperheroe(req.body);
+        
+        // Redirigimos a la lista principal tras el éxito. (Tras agregarlo, redirige de vuelta al dashboard)
+        res.redirect('/heroes'); 
     } catch (error) {
-        res.status(500).send({ mensaje: 'Error al crear el superheroe', error: error.message });
+        res.status(500).send({ mensaje: 'Error al crear el superhéroe', error: error.message });
     }
 }
 
