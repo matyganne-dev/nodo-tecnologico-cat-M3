@@ -32,7 +32,7 @@
                     <td>
                         <a href="/heroes/<%= heroe.id %>/editar">Editar</a> | 
                         <form action="/heroes/<%= heroe.id %>?_method=DELETE" method="POST">
-                            <button type="submit" onclick="return confirm('¿Seguro que querés eliminar este superhéroe?')">
+                            <button type="button" onclick="confirmarEliminacion('<%= heroe.id %>', '<%= heroe.Nombre %>')">
                                 Eliminar
                             </button>
                         </form>
@@ -41,5 +41,32 @@
             <% }); %>
         </tbody>
     </table>
+
+    <script>
+        async function confirmarEliminacion(id, nombre) {
+            // Etapa 5: Confirmación antes de eliminar
+            if (!confirm(`¿Estás seguro que querés eliminar a ${nombre}? Esta acción no se puede deshacer.`)) {
+                return;
+            }
+
+            try {
+                // Etapa 5: Endpoint DELETE /heroes/:id
+                const res = await fetch(`/heroes/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (res.ok || res.redirected) {
+                    // Etapa 6: Refrescar el Dashboard[cite: 6]
+                    window.location.reload(); 
+                } else {
+                    alert("Hubo un error al intentar eliminar al superhéroe.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                // Paracaídas por si el servidor redirige[cite: 4]
+                window.location.href = "/heroes";
+            }
+        }
+    </script>
 </body>
 </html>
