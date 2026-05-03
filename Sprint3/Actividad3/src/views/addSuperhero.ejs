@@ -1,26 +1,25 @@
-
-
-
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Agregar Superhéroe</title>
 </head>
+
 <body>
     <h1>Nuevo Superhéroe</h1>
-    <form action="/heroes/agregar" method="POST">
+    <form id="addHeroForm">
         <div>
             <label>Nombre del Superhéroe:</label>
-            <input type="text" name="nombreSuperHeroe" required>
+            <input type=" text" name="nombreSuperHeroe" id="nombreSuperHeroe">
         </div>
         <div>
             <label>Nombre Real:</label>
-            <input type="text" name="nombreReal" required>
+            <input type="text" name="nombreReal">
         </div>
         <div>
             <label>Edad:</label>
-            <input type="number" name="edad" min="0" required>
+            <input type="number" name="edad">
         </div>
         <div>
             <label>Planeta de Origen:</label>
@@ -32,11 +31,80 @@
         </div>
         <div>
             <label>Poderes (separados por coma):</label>
-            <input type="text" name="poderes" placeholder="Volar, Fuerza, etc." required>
+            <input type="text" name="poderes" placeholder="Volar, Fuerza, etc.">
         </div>
         <br>
         <button type="submit">Guardar Héroe</button>
         <a href="/heroes">Cancelar</a>
     </form>
+
+    <script>
+        document.getElementById("addHeroForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const form = e.target;
+
+            // 1. Obtener y limpiar valores
+            const nombreSuperHeroe = form.nombreSuperHeroe.value.trim();
+            const nombreReal = form.nombreReal.value.trim();
+            const edad = parseInt(form.edad.value, 10);
+            const poderes = form.poderes.value.split(',').map(p => p.trim()).filter(Boolean);
+
+            // 2. Validaciones de Frontend (espejo de tu backend)
+            const errors = [];
+            if (nombreSuperHeroe.length < 3 || nombreSuperHeroe.length > 60) {
+                errors.push("El nombre del héroe debe tener entre 3 e 60 caracteres.");
+            }
+            if (nombreReal.length < 3 || nombreReal.length > 60) {
+                errors.push("El nombre real debe tener entre 3 e 60 caracteres.");
+            }
+            if (isNaN(edad) || edad < 0) {
+                errors.push("La edad debe ser un número mayor o igual a 0.");
+            }
+            if (poderes.length < 1) {
+                errors.push("Debes ingresar al menos un poder.");
+            } else if (poderes.some(p => p.length < 3)) {
+                errors.push("Cada poder debe tener al menos 3 caracteres.");
+            }
+
+            if (errors.length > 0) {
+                alert("Errores detectados:\n" + errors.join('\n'));
+                return;
+            }
+
+            // 3. Envío con POST
+            const body = {
+                nombreSuperHeroe,
+                nombreReal,
+                edad,
+                planetaOrigen: form.planetaOrigen.value,
+                debilidad: form.debilidad.value,
+                poderes
+            };
+
+            try {
+                const res = await fetch("/heroes/agregar", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body)
+                });
+
+                if (res.ok || res.redirected) {
+                    alert("¡Superhéroe creado con éxito!");
+                    window.location.href = "/heroes"; // Etapa 6: Redirigir al dashboard
+                } else {
+                    const errorData = await res.json();
+                    const msjError = errorData.errors
+                        ? errorData.errors.map(e => e.mensaje).join('\n')
+                        : (errorData.message || "Error al crear");
+                    alert("Error del servidor:\n" + msjError);
+                }
+            } catch (err) {
+                console.error("Error:", err);
+                // Paracaídas por si el servidor redirige y el fetch falla
+                window.location.href = "/heroes";
+            }
+        });
+    </script>
 </body>
+
 </html>
