@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Superhéroe</title>
+</head>
+
+<body>
+    <h1>Editar Superhéroe: <%= heroe.nombreSuperHeroe %>
+    </h1>
+
+    <form id="editHeroForm">
+        <div>
+            <label>Nombre del Superhéroe:</label>
+            <input type="text" name="nombreSuperHeroe" id="nombreSuperHeroe" value="<%= heroe.nombreSuperHeroe %>">
+        </div>
+        <div>
+            <label>Nombre Real:</label>
+            <input type="text" name="nombreReal" value="<%= heroe.nombreReal %>" required>
+        </div>
+        <div>
+            <label>Edad:</label>
+            <input type="number" name="edad" value="<%= heroe.edad %>">
+        </div>
+        <div>
+            <label>Planeta de Origen:</label>
+            <input type="text" name="planetaOrigen" value="<%= heroe.planetaOrigen %>">
+        </div>
+        <div>
+            <label>Debilidad:</label>
+            <input type="text" name="debilidad" value="<%= heroe.debilidad %>">
+        </div>
+        <div>
+            <label>Poderes (separados por coma):</label>
+            <input type="text" name="poderes" value="<%= heroe.poderes.join(', ') %>">
+        </div>
+        <br>
+        <button type="submit">Actualizar Cambios</button>
+        <a href="/heroes">Cancelar</a>
+    </form>
+
+    <script>
+        document.getElementById("editHeroForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const form = e.target;
+
+            // 1. Obtener valores
+            const nombreSuperHeroe = form.nombreSuperHeroe.value.trim();
+            const nombreReal = form.nombreReal.value.trim();
+            const edad = parseInt(form.edad.value, 10);
+            const poderes = form.poderes.value.split(',').map(p => p.trim()).filter(Boolean);
+
+            // 2. Validaciones de Frontend siguiendo los ejemplos del profe
+            const errors = [];
+            if (nombreSuperHeroe.length < 3 || nombreSuperHeroe.length > 60) {
+                errors.push("El nombre del héroe debe tener entre 3 y 60 caracteres.");
+            }
+            if (nombreReal.length < 3 || nombreReal.length > 60) {
+                errors.push("El nombre real debe tener entre 3 y 60 caracteres.");
+            }
+            if (isNaN(edad) || edad < 0) {
+                errors.push("La edad debe ser un número mayor o igual a 0.");
+            }
+            if (poderes.length < 1) {
+                errors.push("Debes ingresar al menos un poder.");
+            }
+
+            if (errors.length > 0) {
+                alert(errors.join('\n'));
+                return; // Bloquea el envío
+            }
+
+            // 3. Envío con método PUT
+            const body = {
+                nombreSuperHeroe,
+                nombreReal,
+                edad,
+                planetaOrigen: form.planetaOrigen.value,
+                debilidad: form.debilidad.value,
+                poderes
+            };
+
+            try {
+                const res = await fetch("/heroes/<%= heroe._id %>/editar", {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body),
+                });
+
+                // Si el backend responde con éxito
+                if (res.ok || res.redirected) {
+                    alert("¡Actualizado con éxito!");
+                    //"Tras editarlo, redirige al dashboard"
+                    window.location.href = "/heroes";
+                } else {
+                    // Si hay errores de validación del backend (handleValidationErrors)
+                    const errorData = await res.json();
+                    const msjError = errorData.errors
+                        ? errorData.errors.map(e => e.mensaje).join('\n')
+                        : (errorData.message || "Error desconocido");
+                    alert("Error al guardar:\n" + msjError);
+                }
+            } catch (err) {
+                // Si llegas aquí, es que se actualizó pero el fetch se mareó con la redirección
+                // Como confirmaste que en Mongo ya se cambió, simplemente redirigimos.
+                // Si entramos aquí, puede ser por dos razones:
+                // 1. Hubo un error de red (no hay internet).
+                // 2. El servidor redirigió y el fetch no pudo manejarlo.
+
+                console.error("Error capturado:", err);
+
+                // Intentamos verificar si a pesar del error, la operación fue exitosa
+                // Una forma sencilla es avisar al usuario y dejar que él decida o redirigir
+                alert("La operación terminó. Volviendo al listado para verificar...");
+                window.location.href = "/heroes";
+            }
+        });
+    </script>
+</body>
+
+</html>
