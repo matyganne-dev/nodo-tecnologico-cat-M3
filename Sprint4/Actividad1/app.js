@@ -41,6 +41,11 @@ app.use(methodOverride('_method'));
 // Conexión a MongoDB
 connecBD();
 
+// RUTA RAÍZ: Esto es lo que se carga al entrar al link de Render
+app.get('/', (req, res) => {
+    res.render('index', { title: 'Inicio - SuperHéroes App' });
+});
+
 // Configuración de rutas modificado
 // Antes: app.use('/api', superHeroRoutes);
 // Ahora: Según el enunciado (Etapa 2 y 3)
