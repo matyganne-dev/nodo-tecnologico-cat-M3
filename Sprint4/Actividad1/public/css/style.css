@@ -14,6 +14,10 @@ body {
     font-family: 'Segoe UI', sans-serif;
 }
 
+/* GLOBAL */
+a{
+    text-decoration: none;
+}
 
 /* --- ESTILOS DE NABVAR --- */
 
@@ -50,7 +54,9 @@ body {
 
 .nav-menu {
     display: flex;
-    justify-content: space-evenly;
+    align-items: end;
+    justify-content: end;
+    gap: 5rem;
 }
 
 .nav-menu a {
@@ -146,7 +152,6 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     padding: 3rem 2rem;
-    border-radius: 24px;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
     flex-direction: column;
@@ -178,7 +183,6 @@ body {
     color: var(--white);
     font-weight: 600;
     padding: 0.8rem 2rem;
-    border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     transition: all 0.3s ease;
 }
@@ -299,3 +303,183 @@ body {
     font-size: 0.75rem;
     color: rgba(255, 255, 255, 0.3);
 }
+
+
+
+
+
+
+
+/* Seccion formulario Contenedor del Formulario */
+
+.form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.custom-form {
+    background: var(--color-bg-mid);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    color: white;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--color-crimson);
+}
+
+/* Botones del Formulario */
+.form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-save {
+    background: var(--color-crimson);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.btn-cancel:hover {
+    color: white;
+}
+
+
+
+
+
+/* --- ESTILOS DEL DASHBOARD --- */
+
+
+.dashboard-container {
+    padding: 2rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.table-wrapper {
+    margin-top: 40px;
+    overflow-x: auto;
+    border: 1px solid rgba(255, 255, 255, 0.1); 
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse; 
+    background: var(--color-bg-mid);
+    color: var(--white);
+    text-align: left;
+}
+
+.custom-table th {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 18px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--color-crimson);
+    border-bottom: 2px solid var(--color-crimson); 
+}
+
+tr{
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05)
+    
+}
+
+tr td:last-child{
+    /* background-color: red; */
+}
+
+.custom-table td {
+    padding: 16px 18px;
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
+
+.custom-table tr:hover {
+    background: rgba(255, 255, 255, 0.02); 
+}
+
+.hero-name {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Etiquetas de Poderes */
+.powers-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.power-tag {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Botones de Acción */
+.actions-cell {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-edit, .btn-delete {
+    background: none;
+    border: none;
+    color: var(--white);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.btn-edit:hover { color: #3498db; }
+.btn-delete:hover { color: var(--color-crimson); }
+
+
+
+
+
