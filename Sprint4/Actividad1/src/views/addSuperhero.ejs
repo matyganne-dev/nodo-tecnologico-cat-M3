@@ -1,33 +1,37 @@
-<h1>Nuevo Superhéroe</h1>
-<form id="addHeroForm">
-    <div>
-        <label>Nombre del Superhéroe:</label>
-        <input type=" text" name="nombreSuperHeroe" id="nombreSuperHeroe">
-    </div>
-    <div>
-        <label>Nombre Real:</label>
-        <input type="text" name="nombreReal">
-    </div>
-    <div>
-        <label>Edad:</label>
-        <input type="number" name="edad">
-    </div>
-    <div>
-        <label>Planeta de Origen:</label>
-        <input type="text" name="planetaOrigen">
-    </div>
-    <div>
-        <label>Debilidad:</label>
-        <input type="text" name="debilidad">
-    </div>
-    <div>
-        <label>Poderes (separados por coma):</label>
-        <input type="text" name="poderes" placeholder="Volar, Fuerza, etc.">
-    </div>
-    <br>
-    <button type="submit">Guardar Héroe</button>
-    <a href="/heroes">Cancelar</a>
-</form>
+<section class="form-container">
+    <h1>Nuevo Superhéroe</h1>
+    <form id="addHeroForm" class="custom-form">
+        <div class="form-group">
+            <label>Nombre del Superhéroe:</label>
+            <input type="text" name="nombreSuperHeroe" id="nombreSuperHeroe" placeholder="Ej: Iron Man">
+        </div>
+        <div class="form-group">
+            <label>Nombre Real:</label>
+            <input type="text" name="nombreReal" placeholder="Ej: Tony Stark">
+        </div>
+        <div class="form-group">
+            <label>Edad:</label>
+            <input type="number" name="edad">
+        </div>
+        <div class="form-group">
+            <label>Planeta de Origen:</label>
+            <input type="text" name="planetaOrigen">
+        </div>
+        <div class="form-group">
+            <label>Debilidad:</label>
+            <input type="text" name="debilidad">
+        </div>
+        <div class="form-group">
+            <label>Poderes (separados por coma):</label>
+            <input type="text" name="poderes" placeholder="Volar, Fuerza, etc.">
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-save">Guardar Héroe</button>
+            <a href="/heroes" class="btn-cancel">Cancelar</a>
+        </div>
+    </form>
+</section>
 
 <script>
     document.getElementById("addHeroForm").addEventListener("submit", async (e) => {

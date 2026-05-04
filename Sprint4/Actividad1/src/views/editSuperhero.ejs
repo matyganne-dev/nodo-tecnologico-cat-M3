@@ -1,35 +1,40 @@
-<h1>Editar Superhéroe: <%= heroe.nombreSuperHeroe %>
-</h1>
 
-<form id="editHeroForm">
-    <div>
-        <label>Nombre del Superhéroe:</label>
-        <input type="text" name="nombreSuperHeroe" id="nombreSuperHeroe" value="<%= heroe.nombreSuperHeroe %>">
-    </div>
-    <div>
-        <label>Nombre Real:</label>
-        <input type="text" name="nombreReal" value="<%= heroe.nombreReal %>" required>
-    </div>
-    <div>
-        <label>Edad:</label>
-        <input type="number" name="edad" value="<%= heroe.edad %>">
-    </div>
-    <div>
-        <label>Planeta de Origen:</label>
-        <input type="text" name="planetaOrigen" value="<%= heroe.planetaOrigen %>">
-    </div>
-    <div>
-        <label>Debilidad:</label>
-        <input type="text" name="debilidad" value="<%= heroe.debilidad %>">
-    </div>
-    <div>
-        <label>Poderes (separados por coma):</label>
-        <input type="text" name="poderes" value="<%= heroe.poderes.join(', ') %>">
-    </div>
-    <br>
-    <button type="submit">Actualizar Cambios</button>
-    <a href="/heroes">Cancelar</a>
-</form>
+<section class="form-container">
+    <h1>Editar Superhéroe: <%= heroe.nombreSuperHeroe %>
+    </h1>
+
+    <form id="editHeroForm" class="custom-form">
+        <div class="form-group">
+            <label>Nombre del Superhéroe:</label>
+            <input type="text" name="nombreSuperHeroe" id="nombreSuperHeroe" value="<%= heroe.nombreSuperHeroe %>">
+        </div>
+        <div class="form-group">
+            <label>Nombre Real:</label>
+            <input type="text" name="nombreReal" value="<%= heroe.nombreReal %>" required>
+        </div>
+        <div class="form-group">
+            <label>Edad:</label>
+            <input type="number" name="edad" value="<%= heroe.edad %>">
+        </div>
+        <div class="form-group">
+            <label>Planeta de Origen:</label>
+            <input type="text" name="planetaOrigen" value="<%= heroe.planetaOrigen %>">
+        </div>
+        <div class="form-group">
+            <label>Debilidad:</label>
+            <input type="text" name="debilidad" value="<%= heroe.debilidad %>">
+        </div>
+        <div class="form-group">
+            <label>Poderes (separados por coma):</label>
+            <input type="text" name="poderes" value="<%= heroe.poderes.join(', ') %>">
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-save">Actualizar Cambios</button>
+            <a href="/heroes" class="btn-cancel">Cancelar</a>
+        </div>
+    </form>
+</section>
 
 <script>
     document.getElementById("editHeroForm").addEventListener("submit", async (e) => {
