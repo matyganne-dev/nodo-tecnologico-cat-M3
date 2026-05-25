@@ -1,0 +1,69 @@
+<section class="form-container">
+    <h1>Editar País: <%= pais.name && pais.name.official ? pais.name.official : '' %></h1>
+
+    <form id="editCountryForm" class="custom-form">
+        <div class="form-group">
+            <label>Nombre Oficial del País:</label>
+            <input type="text" name="officialName" value="<%= pais.name && pais.name.official ? pais.name.official : '' %>" required>
+        </div>
+        <div class="form-group">
+            <label>Capital:</label>
+            <input type="text" name="capital" value="<%= pais.capital ? pais.capital.join(', ') : '' %>" required>
+        </div>
+        <div class="form-group">
+            <label>Área (en km²):</label>
+            <input type="number" name="area" value="<%= pais.area %>" required>
+        </div>
+        <div class="form-group">
+            <label>Población:</label>
+            <input type="number" name="population" value="<%= pais.population %>" required>
+        </div>
+        <div class="form-group">
+            <label>Índice Gini:</label>
+            <input type="number" step="0.1" name="gini" value="<%= (pais.gini !== null && pais.gini !== undefined) ? pais.gini : '' %>">
+        </div>
+        <div class="form-group">
+            <label>Fronteras / Borders (separados por coma):</label>
+            <input type="text" name="borders" value="<%= pais.borders ? pais.borders.join(', ') : '' %>">
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-save">Actualizar País</button>
+            <a href="/paises" class="btn-cancel">Cancelar</a>
+        </div>
+    </form>
+</section>
+
+<script>
+    document.getElementById("editCountryForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const form = e.target;
+
+        const body = {
+            officialName: form.officialName.value.trim(),
+            capital: form.capital.value.trim(),
+            area: form.area.value,
+            population: form.population.value,
+            gini: form.gini.value ? form.gini.value : null,
+            borders: form.borders.value.trim()
+        };
+
+        try {
+            const res = await fetch("/paises/<%= pais._id %>/editar", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+
+            if (res.ok) {
+                alert("¡País actualizado con éxito!");
+                window.location.href = "/paises"; 
+            } else {
+                alert("Error en el servidor al intentar actualizar.");
+            }
+        } catch (err) {
+            console.error("Error capturado:", err);
+            window.location.href = "/paises";
+        }
+    });
+</script>

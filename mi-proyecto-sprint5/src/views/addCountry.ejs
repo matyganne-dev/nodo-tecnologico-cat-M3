@@ -1,0 +1,68 @@
+<section class="form-container">
+    <h1>Nuevo País Hispanohablantes</h1>
+    <form id="addCountryForm" class="custom-form">
+        <div class="form-group">
+            <label>Nombre Oficial del País:</label>
+            <input type="text" name="officialName" placeholder="Ej: República de Colombia" required>
+        </div>
+        <div class="form-group">
+            <label>Capital (Separadas por comas si son varias):</label>
+            <input type="text" name="capital" placeholder="Ej: Bogotá" required>
+        </div>
+        <div class="form-group">
+            <label>Área (en km²):</label>
+            <input type="number" name="area" placeholder="Ej: 1141748" required>
+        </div>
+        <div class="form-group">
+            <label>Población Actual:</label>
+            <input type="number" name="population" placeholder="Ej: 53057212" required>
+        </div>
+        <div class="form-group">
+            <label>Índice Gini (0-100 Opcional):</label>
+            <input type="number" step="0.1" name="gini" placeholder="Ej: 51.3">
+        </div>
+        <div class="form-group">
+            <label>Límites / Fronteras (3 letras separados por coma):</label>
+            <input type="text" name="borders" placeholder="Ej: BRA, ECU, PAN, PER, VEN">
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-save">Guardar País</button>
+            <a href="/paises" class="btn-cancel">Cancelar</a>
+        </div>
+    </form>
+</section>
+
+<script>
+    document.getElementById("addCountryForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const form = e.target;
+
+        const body = {
+            officialName: form.officialName.value.trim(),
+            capital: form.capital.value.trim(),
+            area: form.area.value,
+            population: form.population.value,
+            gini: form.gini.value ? form.gini.value : null,
+            borders: form.borders.value.trim()
+        };
+
+        try {
+            const res = await fetch("/paises/agregar", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+
+            if (res.ok) {
+                alert("¡País guardado exitosamente!");
+                window.location.href = "/paises";
+            } else {
+                alert("Error al intentar guardar el país en el servidor.");
+            }
+        } catch (err) {
+            console.error("Error:", err);
+            window.location.href = "/paises";
+        }
+    });
+</script>
