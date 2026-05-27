@@ -1,5 +1,11 @@
 <section class="form-container">
-    <h1>Nuevo País Hispanohablantes</h1>
+    <h1>Nuevo País Hispanohablante</h1>
+    
+    <div id="error-container" style="display: none; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 15px; margin-bottom: 20px; border-radius: 4px;">
+        <h4 style="margin-top: 0;">Por favor, corrige los siguientes errores:</h4>
+        <ul id="error-list"></ul>
+    </div>
+
     <form id="addCountryForm" class="custom-form">
         <div class="form-group">
             <label>Nombre Oficial del País:</label>
@@ -25,6 +31,10 @@
             <label>Límites / Fronteras (3 letras separados por coma):</label>
             <input type="text" name="borders" placeholder="Ej: BRA, ECU, PAN, PER, VEN">
         </div>
+        <div class="form-group">
+            <label>Husos Horarios (Separados por coma - Opcional):</label>
+            <input type="text" name="timezones" placeholder="Ej: UTC-05:00, UTC-04:00">
+        </div>
 
         <div class="form-actions">
             <button type="submit" class="btn-save">Guardar País</button>
@@ -38,13 +48,19 @@
         e.preventDefault();
         const form = e.target;
 
+        const errorContainer = document.getElementById("error-container");
+        const errorList = document.getElementById("error-list");
+        errorContainer.style.display = "none";
+        errorList.innerHTML = "";
+
         const body = {
             officialName: form.officialName.value.trim(),
             capital: form.capital.value.trim(),
             area: form.area.value,
             population: form.population.value,
             gini: form.gini.value ? form.gini.value : null,
-            borders: form.borders.value.trim()
+            borders: form.borders.value.trim(),
+            timezones: form.timezones.value.trim()
         };
 
         try {
@@ -54,15 +70,25 @@
                 body: JSON.stringify(body)
             });
 
+            const data = await res.json();
+
             if (res.ok) {
                 alert("¡País guardado exitosamente!");
                 window.location.href = "/paises";
+            } else if (res.status === 400 && data.errors) {
+                // Si hay errores de validación, se muestran en pantalla y NO se borra el formulario
+                errorContainer.style.display = "block";
+                data.errors.forEach(err => {
+                    const li = document.createElement("li");
+                    li.textContent = `${err.mensaje}`;
+                    errorList.appendChild(li);
+                });
             } else {
-                alert("Error al intentar guardar el país en el servidor.");
+                alert(data.mensaje || "Error al intentar guardar el país.");
             }
-        } catch (err) {
-            console.error("Error:", err);
-            window.location.href = "/paises";
+        } catch (error) {
+            console.error("Error de red:", error);
+            alert("No se pudo conectar con el servidor.");
         }
     });
 </script>
