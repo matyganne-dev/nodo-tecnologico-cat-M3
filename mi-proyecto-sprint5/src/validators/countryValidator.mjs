@@ -1,24 +1,31 @@
 import { body } from 'express-validator';
 
 export const validarPais = [
-    body('name.official')
+    body('officialName')
         .trim()
         .isLength({ min: 3, max: 90 }).withMessage('El nombre oficial debe tener entre 3 y 90 caracteres.'),
     
     body('capital')
         .trim()
-        .notEmpty().withMessage('La capital es obligatoria y debe tener entre 3 y 90 caracteres.'),
+        .notEmpty().withMessage('La capital es obligatoria.')
+        .custom((value) => {
+            const listaCapitales = value.split(',').map(c => c.trim());
+            const todasValidas = listaCapitales.every(cap => cap.length >= 3 && cap.length <= 90);
+            if (!todasValidas) {
+                throw new Error('Cada capital ingresada debe tener entre 3 y 90 caracteres.');
+            }
+            return true;
+        }),
         
     body('borders')
         .optional({ checkFalsy: true })
         .custom((value) => {
-            // Si el usuario ingresa códigos separados por coma (ej: ARG,BRA) los validamos
             if (!value) return true;
-            const codes = value.split(',').map(c => c.trim());
+            const codigos = value.split(',').map(c => c.trim());
             const regex = /^[A-Z]{3}$/;
-            const allValid = codes.every(code => regex.test(code));
-            if (!allValid) {
-                throw new Error('Cada código de frontera (border) debe ser de 3 letras mayúsculas (ej: ARG, BRA).');
+            const todosValidos = codigos.every(codigo => regex.test(codigo));
+            if (!todosValidos) {
+                throw new Error('Cada código de frontera debe tener exactamente 3 letras mayúsculas (ej: ARG, BRA).');
             }
             return true;
         }),
