@@ -1,64 +1,57 @@
 import axios from 'axios';
 
-// Reemplaza esto con tu nombre real como indica el enunciado
 const MI_NOMBRE = "Pablo Matias Ganne Moreno"; 
 
-/**
- * Normaliza el objeto Gini de la API para extraer solo el valor del último año disponible.
- * Ejemplo de entrada: { "2016": 31.9 } -> Retorna: 31.9
- */
 function normalizeGini(giniObj) {
     if (!giniObj || typeof giniObj !== 'object') return null;
-    
     const years = Object.keys(giniObj);
     if (years.length === 0) return null;
-    
-    // Ordenamos los años y tomamos el más reciente
     const lastYear = years.sort().pop();
     return giniObj[lastYear];
 }
 
-/**
- * Obtiene los países de América, los filtra por idioma español,
- * limpia sus propiedades y agrega los campos requeridos.
- */
 export async function fetchAndProcessCountries() {
     try {
         const URL = 'https://restcountries.com/v3.1/region/america';
         const response = await axios.get(URL);
         const countries = response.data;
 
-        // 1. Filtrar: conservar solo países con idioma español ("spa")
-        const spanishCountries = countries.filter(country => {
-            return country.languages && country.languages.spa;
-        });
+        const spanishCountries = countries.filter(country => country.languages && country.languages.spa);
 
-        // 2. Limpiar y estructurar según lo requerido para nuestra base de datos
-        const processedCountries = spanishCountries.map(country => {
-            // Fallback de nombres: si no existe name.spa.official, usamos name.official
+        return spanishCountries.map(country => {
             const officialName = country.name?.nativeName?.spa?.official || country.name?.official;
-
             return {
-                name: {
-                    official: officialName
-                },
-                // Validamos arrays vacíos antes de mapear o guardar (evitando null/undefined)
+                name: { official: officialName },
                 capital: country.capital || [],
                 borders: country.borders || [],
                 area: country.area || 0,
                 population: country.population || 0,
-                // Aplicamos la normalización del Gini
                 gini: normalizeGini(country.gini),
                 timezones: country.timezones || [],
-                // Agregamos la propiedad nueva
                 creador: MI_NOMBRE
             };
         });
-
-        return processedCountries;
-
     } catch (error) {
         console.error('Error al procesar los datos de la API externa:', error.message);
         throw new Error('No se pudieron obtener o procesar los países de la API.');
     }
+}
+
+/*NUEVA FUNCIÓN: Transforma y normaliza los datos crudos del formulario antes de enviarlos al Repositorio para su creación o edición.*/
+export function mapearDatosFormulario(datosFormulario) {
+    const { officialName, capital, area, population, gini, borders, timezones } = datosFormulario;
+
+    return {
+        name: { 
+            official: officialName 
+        },
+        capital: capital ? capital.split(',').map(c => c.trim()) : [],
+        borders: borders ? borders.split(',').map(b => b.trim().toUpperCase()) : [],
+        area: Number(area),
+        population: Number(population),
+        gini: gini ? Number(gini) : null,
+        // Si no vienen husos horarios, le ponemos el fallback por defecto
+        timezones: timezones ? timezones.split(',').map(t => t.trim()) : ["UTC-03:00"],
+        creador: MI_NOMBRE
+    };
 }
