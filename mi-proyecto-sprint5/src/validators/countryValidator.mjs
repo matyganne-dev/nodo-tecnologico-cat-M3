@@ -1,12 +1,29 @@
 import { body } from 'express-validator';
 
+/**
+ * Función helper para remover CUALQUIER etiqueta HTML, caracteres de control 
+ * o basura inyectada en los campos de texto antes de guardarlos.
+ */
+const limpiarBasuraHTML = (value) => {
+    if (typeof value !== 'string') return value;
+    
+    // 1. Expresión regular que busca cualquier cosa con formato <etiqueta> o </etiqueta> y la elimina
+    let textoLimpio = value.replace(/<\/?[^>]+(>|$)/g, "");
+    
+    // 2. Removemos espacios extras que hayan quedado al borrar las etiquetas
+    return textoLimpio.replace(/\s+/g, ' ').trim();
+};
+
 export const validarPais = [
     body('officialName')
         .trim()
-        .isLength({ min: 3, max: 90 }).withMessage('El nombre oficial debe tener entre 3 y 90 caracteres.'),
+        .customSanitizer(limpiarBasuraHTML) //LIMPIEZA TOTAL: Borra <h1>, <script>, etc. antes de validar
+        .notEmpty().withMessage('El nombre oficial es obligatorio.')
+        .isLength({ min: 3, max: 90 }).withMessage('El nombre oficial corregido debe tener entre 3 y 90 caracteres.'),
     
     body('capital')
         .trim()
+        .customSanitizer(limpiarBasuraHTML) //LIMPIEZA TOTAL: Borra basura de las capitales
         .notEmpty().withMessage('La capital es obligatoria.')
         .custom((value) => {
             const listaCapitales = value.split(',').map(c => c.trim());
@@ -19,6 +36,8 @@ export const validarPais = [
         
     body('borders')
         .optional({ checkFalsy: true })
+        .trim()
+        .customSanitizer(limpiarBasuraHTML) // Por si intentan inyectar código en las fronteras
         .custom((value) => {
             if (!value) return true;
             const codigos = value.split(',').map(c => c.trim());
