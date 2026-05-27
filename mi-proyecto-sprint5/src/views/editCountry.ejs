@@ -9,19 +9,19 @@
     <form id="editCountryForm" class="custom-form">
         <div class="form-group">
             <label>Nombre Oficial del País:</label>
-            <input type="text" name="officialName" value="<%= pais.name && pais.name.official ? pais.name.official : '' %>" required>
+            <input type="text" name="officialName" value="<%= pais.name && pais.name.official ? pais.name.official : '' %>">
         </div>
         <div class="form-group">
             <label>Capital:</label>
-            <input type="text" name="capital" value="<%= pais.capital ? pais.capital.join(', ') : '' %>" required>
+            <input type="text" name="capital" value="<%= pais.capital ? pais.capital.join(', ') : '' %>">
         </div>
         <div class="form-group">
             <label>Área (en km²):</label>
-            <input type="number" name="area" value="<%= pais.area %>" required>
+            <input type="number" name="area" value="<%= pais.area %>">
         </div>
         <div class="form-group">
             <label>Población:</label>
-            <input type="number" name="population" value="<%= pais.population %>" required>
+            <input type="number" name="population" value="<%= pais.population %>">
         </div>
         <div class="form-group">
             <label>Índice Gini:</label>
@@ -52,6 +52,24 @@
         const errorList = document.getElementById("error-list");
         errorContainer.style.display = "none";
         errorList.innerHTML = "";
+
+        // --- VALIDACIÓN POR SCRIPT EN EL FRONTEND ---
+        const erroresFrontend = [];
+        
+        if (!form.officialName.value.trim()) erroresFrontend.push("El nombre oficial del país no puede estar vacío.");
+        if (!form.capital.value.trim()) erroresFrontend.push("La capital no puede estar vacía.");
+        if (!form.area.value.trim()) erroresFrontend.push("El área no puede estar vacía.");
+        if (!form.population.value.trim()) erroresFrontend.push("La población no puede estar vacía.");
+
+        if (erroresFrontend.length > 0) {
+            errorContainer.style.display = "block";
+            erroresFrontend.forEach(msg => {
+                const li = document.createElement("li");
+                li.textContent = msg;
+                errorList.appendChild(li);
+            });
+            return;
+        }
 
         const body = {
             officialName: form.officialName.value.trim(),

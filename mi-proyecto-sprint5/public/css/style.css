@@ -242,12 +242,49 @@ main {
 
 /* TABLAS (DASHBOARD) */
 .table-wrapper {
-    background-color: var(--bg-tarjetas);
+    width: 100%;
+    overflow-x: auto; 
+    margin-top: 25px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    background-color: var(--bg-tarjetas); 
     border: 1px solid var(--borde-color);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-top: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    
+    /* Soporte de scrollbar para Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #44444e var(--bg-tarjetas);
+}
+
+.table-wrapper::-webkit-scrollbar {
+    height: 8px; /* Altura del scroll horizontal */
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+    background: var(--bg-tarjetas);
+    border-radius: 0 0 8px 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+    background: #44444e; /* Gris sutil que combina con tu fondo oscuro */
+    border-radius: 20px;
+    border: 2px solid var(--bg-tarjetas); /* Efecto de separación */
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #575765; /* Se aclara un poquito al pasar el mouse */
+}
+
+.custom-table th, 
+.custom-table td {
+    white-space: nowrap; 
+    padding: 14px 18px;  
+}
+
+.actions-cell {
+    min-width: 170px;
+    text-align: center;
+    white-space: nowrap;
 }
 
 .custom-table {
