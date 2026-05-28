@@ -140,10 +140,35 @@
                 </tr>
             </tfoot>
         </table>
+        <div class="pagination-panel"
+            style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; padding: 10px; user-select: none;">
+            <button id="btnPrevPage" onclick="cambiarPagina(-1)" class="cta-button"
+                style="padding: 8px 16px; font-size: 0.85rem;">
+                ← Anterior
+            </button>
+            <span id="pageIndicator"
+                style="font-size: 0.9rem; color: var(--texto-mutado); font-weight: 600; letter-spacing: 0.5px;">
+                Página <span id="lblCurrentPage" style="color: var(--primario);">1</span> de <span
+                    id="lblTotalPages">1</span>
+            </span>
+            <button id="btnNextPage" onclick="cambiarPagina(1)" class="cta-button"
+                style="padding: 8px 16px; font-size: 0.85rem;">
+                Siguiente →
+            </button>
+        </div>
     </div>
 </section>
 
 <script>
+    // VARIABLES DE ESTADO PARA PAGINACIÓN Y FILTRADO
+    let paginaActual = 1;
+    const FILAS_POR_PAGINA = 25;
+
+    // Ejecución inicial automática al cargar el DOM del navegador
+    document.addEventListener("DOMContentLoaded", () => {
+        ejecutarFiltrosCombinados();
+    });
+
     function ejecutarFiltrosCombinados() {
         const checkbox = document.getElementById("filterMyCountries");
         const labelTexto = document.getElementById("checkbox-text");
@@ -155,41 +180,76 @@
             labelTexto.innerText = "Mostrar solo mis países";
         }
 
-        // buscador de texto
         const textoBusqueda = document.getElementById("searchTexto").value.toLowerCase().trim();
-
-        // --- LOGICA EXCLUSIVA PARA EL SLIDER---
         const popMinimaPermitida = parseInt(document.getElementById("searchPopSlider").value) || 1;
         document.getElementById("popValueLabel").innerText = popMinimaPermitida.toLocaleString('es-AR');
-        // ---------------------------------------------
 
         const MI_NOMBRE = "Pablo Matias Ganne Moreno";
         const filas = document.querySelectorAll(".custom-table tbody tr");
+
+        // Almacenaremos un array temporal solo con las filas que CUMPLEN los criterios de búsqueda
+        let filasFiltradasValidas = [];
 
         filas.forEach(fila => {
             if (fila.cells.length < 8) return;
 
             const pais = fila.cells[0].innerText.toLowerCase().trim();
             const capital = fila.cells[1].innerText.toLowerCase().trim();
-
-            // CORRECCIÓN CLAVE: Removemos los puntos de miles antes de evaluar el número para que no se rompa (esto me rompia el filtro)
             const poblacionNum = parseInt(fila.cells[5].innerText.replace(/\./g, "").trim()) || 0;
             const creador = fila.cells[7].innerText.trim();
 
             const coincideAutor = !soloMios || (creador === MI_NOMBRE);
             const coincideTexto = !textoBusqueda || pais.includes(textoBusqueda) || capital.includes(textoBusqueda);
-
-            // --- FILTRO DE POBLACION CORREGIDO ---
             const coincidePoblacion = (poblacionNum >= popMinimaPermitida);
 
             if (coincideAutor && coincideTexto && coincidePoblacion) {
-                fila.style.display = "";
+                filasFiltradasValidas.push(fila);
             } else {
+                // Si no cumple los filtros de texto/slider, se oculta inmediatamente
                 fila.style.display = "none";
             }
         });
 
+        // CONTROL DE PÁGINAS DINÁMICAS BASADO EN EL RESULTADO DEL FILTRADO
+        const totalFilasValidas = filasFiltradasValidas.length;
+        const totalPaginasCalculadas = Math.ceil(totalFilasValidas / FILAS_POR_PAGINA) || 1;
+
+        // Si el usuario filtra algo y su página actual queda fuera de rango, la reseteamos a la primera
+        if (paginaActual > totalPaginasCalculadas) {
+            paginaActual = 1;
+        }
+
+        // Segmentar y renderizar visualmente solo el bloque de 25 de la página activa
+        filasFiltradasValidas.forEach((fila, indice) => {
+            const inicioBloque = (paginaActual - 1) * FILAS_POR_PAGINA;
+            const finBloque = inicioBloque + FILAS_POR_PAGINA;
+
+            if (indice >= inicioBloque && indice < finBloque) {
+                fila.style.display = ""; // Se muestra la fila correspondiente a la página actual
+            } else {
+                fila.style.display = "none"; // Se ocultan las de las otras páginas
+            }
+        });
+
+        // Actualizar indicadores del panel de control HTML
+        document.getElementById("lblCurrentPage").innerText = paginaActual;
+        document.getElementById("lblTotalPages").innerText = totalPaginasCalculadas;
+
+        // Deshabilitar botones en los extremos para evitar desbordes de rango
+        document.getElementById("btnPrevPage").disabled = (paginaActual === 1);
+        document.getElementById("btnNextPage").disabled = (paginaActual === totalPaginasCalculadas);
+
+        // Recalcular los totales del tfoot considerando únicamente lo visible en la página actual
         recalcularTotalesVisibles();
+    }
+
+    function cambiarPagina(direccion) {
+        paginaActual += direccion;
+        // Volvemos a procesar para actualizar la vista de las filas
+        ejecutarFiltrosCombinados();
+
+        // Auto-scroll suave hacia arriba de la tabla para mejorar la UX del usuario al cambiar de página
+        document.querySelector(".table-wrapper").scrollIntoView({ behavior: 'smooth' });
     }
 
     function recalcularTotalesVisibles() {
@@ -200,6 +260,7 @@
         let giniCount = 0;
 
         filas.forEach(fila => {
+            // Suma los datos únicamente de las 25 filas activas en pantalla
             if (fila.style.display !== "none" && fila.cells.length >= 8) {
                 const areaTexto = fila.cells[4].innerText.replace(/\./g, "").trim();
                 const poblacionTexto = fila.cells[5].innerText.replace(/\./g, "").trim();
