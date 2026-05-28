@@ -4,11 +4,14 @@
     --bg-tarjetas: #1a1a1e;
     --texto-color: #e1e1e6;
     --texto-mutado: #8d8d99;
-    --primario: #4caf50; /* Verde Éxito */
+    --primario: #4caf50;
+    /* Verde Éxito */
     --primario-hover: #3d8b41;
-    --peligro: #f75a68; /* Rojo Borrar */
+    --peligro: #f75a68;
+    /* Rojo Borrar */
     --peligro-hover: #c74753;
-    --alerta: #e1b12c; /* Amarillo Editar */
+    --alerta: #e1b12c;
+    /* Amarillo Editar */
     --borde-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -25,7 +28,6 @@ body {
     color: var(--texto-color);
     display: flex;
     flex-direction: column;
-    min-vh: 100vh;
 }
 
 main {
@@ -132,7 +134,8 @@ main {
 }
 
 /* BOTONES */
-.cta-button, .btn-save {
+.cta-button,
+.btn-save {
     display: inline-block;
     background-color: var(--primario);
     color: #fff;
@@ -145,7 +148,8 @@ main {
     transition: background 0.2s;
 }
 
-.cta-button:hover, .btn-save:hover {
+.cta-button:hover,
+.btn-save:hover {
     background-color: var(--primario-hover);
 }
 
@@ -243,21 +247,22 @@ main {
 /* TABLAS (DASHBOARD) */
 .table-wrapper {
     width: 100%;
-    overflow-x: auto; 
+    overflow-x: auto;
     margin-top: 25px;
     margin-bottom: 25px;
     border-radius: 8px;
-    background-color: var(--bg-tarjetas); 
+    background-color: var(--bg-tarjetas);
     border: 1px solid var(--borde-color);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    
+
     /* Soporte de scrollbar para Firefox */
     scrollbar-width: thin;
     scrollbar-color: #44444e var(--bg-tarjetas);
 }
 
 .table-wrapper::-webkit-scrollbar {
-    height: 8px; /* Altura del scroll horizontal */
+    height: 8px;
+    /* Altura del scroll horizontal */
 }
 
 .table-wrapper::-webkit-scrollbar-track {
@@ -266,19 +271,22 @@ main {
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {
-    background: #44444e; /* Gris sutil que combina con tu fondo oscuro */
+    background: #44444e;
+    /* Gris sutil que combina con tu fondo oscuro */
     border-radius: 20px;
-    border: 2px solid var(--bg-tarjetas); /* Efecto de separación */
+    border: 2px solid var(--bg-tarjetas);
+    /* Efecto de separación */
 }
 
 .table-wrapper::-webkit-scrollbar-thumb:hover {
-    background: #575765; /* Se aclara un poquito al pasar el mouse */
+    background: #575765;
+    /* Se aclara un poquito al pasar el mouse */
 }
 
-.custom-table th, 
+.custom-table th,
 .custom-table td {
-    white-space: nowrap; 
-    padding: 14px 18px;  
+    white-space: nowrap;
+    padding: 14px 18px;
 }
 
 .actions-cell {
@@ -293,7 +301,8 @@ main {
     text-align: left;
 }
 
-.custom-table th, .custom-table td {
+.custom-table th,
+.custom-table td {
     padding: 15px 20px;
     border-bottom: 1px solid var(--borde-color);
 }
@@ -406,4 +415,92 @@ main {
     display: flex;
     justify-content: space-between;
     font-size: 0.8rem;
+}
+
+/* SECCIÓN ACERCA DE (PORTFOLIO INTEGRATION) */
+.about-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: var(--bg-tarjetas);
+    padding: 50px;
+    border-radius: 12px;
+    border: 1px solid var(--borde-color);
+}
+
+.about-flex-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.about-brand-side {
+    flex: 1;
+    min-width: 280px;
+}
+
+.about-tag {
+    color: var(--peligro);
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.about-title {
+    font-size: 3rem;
+    line-height: 1.1;
+    margin: 20px 0;
+    font-weight: 900;
+    text-align: left;
+    color: #fff;
+}
+
+.highlight-text {
+    color: var(--peligro);
+}
+
+.about-quote {
+    color: var(--texto-mutado);
+    font-style: italic;
+    border-left: 2px solid var(--peligro);
+    padding-left: 15px;
+    margin-top: 30px;
+}
+
+.about-profile-side {
+    flex: 1.5;
+    min-width: 320px;
+}
+
+.about-description {
+    color: var(--texto-color);
+    line-height: 1.7;
+    font-size: 1.05rem;
+    margin-bottom: 30px;
+    text-align: justify;
+}
+
+.about-skills-title {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--borde-color);
+    padding-bottom: 5px;
+}
+
+.about-skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.skill-item {
+    color: var(--texto-mutado);
+    font-size: 0.95rem;
+}
+
+.skill-plus {
+    color: var(--peligro);
+    font-weight: bold;
 }
