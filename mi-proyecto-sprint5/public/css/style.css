@@ -34,7 +34,7 @@ body {
 main {
     flex: 1;
     padding: 40px 20px;
-    max-width: 1200px;
+    max-width: 1400px;
     width: 100%;
     margin: 0 auto;
 }
@@ -52,7 +52,7 @@ main {
 }
 
 .nav-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
     display: flex;
@@ -335,6 +335,7 @@ main {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
+    table-layout: auto;
 }
 
 .custom-table th {
@@ -344,16 +345,16 @@ main {
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    padding: 18px 20px;
+    padding: 18px 15px;
     border-bottom: 1px solid var(--borde-color);
 }
 
 .custom-table td {
-    padding: 16px 20px;
+    padding: 14px 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     color: #cbd5e1;
     font-size: 0.95rem;
-    white-space: nowrap;
+    white-space: nowrap; /* Mantiene el resto de las celdas numéricas en una línea */
 }
 
 .custom-table tbody tr {
@@ -364,35 +365,63 @@ main {
     background-color: rgba(56, 189, 248, 0.03);
 }
 
-.hero-name {
+/* ACOTLAR ESPACIO DE PAÍS (PERMITIR 2 LÍNEAS) */
+.custom-table td.hero-name {
+    white-space: normal;      /* Permite el salto de línea */
+    max-width: 180px;         /* Limita el ancho horizontal */
+    min-width: 140px;
+    line-height: 1.3;
     font-weight: 700;
     color: #fff !important;
     text-shadow: 0 0 10px rgba(56, 189, 248, 0.1);
 }
 
+/* ACOTLAR ESPACIO DE CREADOR (PERMITIR 2 LÍNEAS) */
+.custom-table tbody td:nth-child(8) {
+    white-space: normal;      /* Permite el salto de línea */
+    max-width: 130px;         /* Ancho ideal para nombres compuestos */
+    min-width: 110px;
+    line-height: 1.3;
+    font-size: 0.85rem;       /* Un toque más chico para que no compita */
+    color: var(--texto-mutated);
+}
+
+/* MINIMIZAR HUSO HORARIO */
+.custom-table tbody td:nth-child(4) {
+    font-size: 0.8rem;        /* Fuente más pequeña */
+    color: var(--texto-mutado);
+    letter-spacing: -0.3px;
+    max-width: 120px;
+    white-space: normal;      /* Por si hay múltiples husos agregados */
+    line-height: 1.2;
+}
+
+/* Etiquetas de Fronteras estilo Neon-Tag */
 .powers-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 4px;
+    max-width: 150px;
 }
 
 .power-tag {
     background-color: rgba(56, 189, 248, 0.1);
     color: var(--primario);
     border: 1px solid rgba(56, 189, 248, 0.2);
-    padding: 3px 8px;
+    padding: 2px 6px;
     border-radius: 4px;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .actions-cell {
-    min-width: 170px;
+    min-width: 160px;
     text-align: center;
 }
 
+/* Pie de tabla con totales destacados */
 .custom-table tfoot tr {
     background-color: rgba(10, 10, 12, 0.4);
 }
@@ -402,7 +431,7 @@ main {
     border-bottom: none;
     color: #fff;
     font-size: 1rem;
-    padding: 20px;
+    padding: 18px 15px;
 }
 
 /* ACERCA DE ----------------------------------------------------------------------------------------------*/
@@ -518,7 +547,7 @@ main {
 }
 
 .footer-main-content {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
     display: flex;
