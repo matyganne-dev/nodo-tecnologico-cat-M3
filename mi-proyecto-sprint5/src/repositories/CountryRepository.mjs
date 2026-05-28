@@ -2,6 +2,11 @@ import Country from '../models/Country.mjs';
 import IRepository from './IRepository.mjs';
 
 class CountryRepository extends IRepository {
+
+    async borrarPorCreador(creadorNombre) {
+        return await Country.deleteMany({ creador: creadorNombre });
+    }
+
     // Obtener todos los países de la base de datos
     async obtenerTodos() {
         return await Country.find({});
@@ -27,17 +32,14 @@ class CountryRepository extends IRepository {
         return await Country.findByIdAndDelete(id);
     }
 
-    /**
-     * Guarda la lista de países procesados desde la API externa.
-     * Utiliza un 'upsert' basado en el nombre oficial para evitar duplicar datos.
-     */
+    /*Guarda la lista de países procesados desde la API externa. Utiliza un 'upsert' basado en el nombre oficial para evitar duplicar datos.*/
     async saveInitialCountries(countriesList) {
         const savedDocs = [];
         for (const countryData of countriesList) {
             const updatedDoc = await Country.findOneAndUpdate(
                 { "name.official": countryData.name.official }, // Criterio de búsqueda
                 countryData,                                  // Datos a insertar/actualizar
-                { upsert: true, new: true, setDefaultsOnInsert: true }
+                { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
             );
             savedDocs.push(updatedDoc);
         }

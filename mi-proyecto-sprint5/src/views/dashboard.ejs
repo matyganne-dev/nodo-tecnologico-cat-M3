@@ -1,7 +1,9 @@
 <section class="dashboard-container">
     <h1>Gestión de Países Hispanohablantes</h1>
     <p>Base de datos oficial de países y estadísticas regionales.</p>
-
+    <button onclick="reiniciarDatos()" class="cta-button" style="background-color: var(--alerta);">
+        Reiniciar Base de Datos
+    </button>
     <div class="table-wrapper">
         <table class="custom-table">
             <thead>
@@ -14,56 +16,55 @@
                     <th>Población</th>
                     <th>Gini</th>
                     <th>Creador</th>
-                    <th class="actions-cell" >Acciones</th>
+                    <th class="actions-cell">Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <% 
-                let totalPopulation = 0;
-                let totalArea = 0;
-                let giniSum = 0;
-                let giniCount = 0;
+                <% let totalPopulation=0; let totalArea=0; let giniSum=0; let giniCount=0; if (typeof paises
+                    !=='undefined' && paises && paises.length> 0) {
+                    paises.forEach(pais => {
+                    if (pais) {
+                    totalPopulation += (pais.population || 0);
+                    totalArea += (pais.area || 0);
 
-                if (typeof paises !== 'undefined' && paises && paises.length > 0) { 
-                    paises.forEach(pais => { 
-                        if (pais) {
-                            totalPopulation += (pais.population || 0);
-                            totalArea += (pais.area || 0);
-                            
-                            if (pais.gini !== undefined && pais.gini !== null && !isNaN(pais.gini)) {
-                                giniSum += pais.gini;
-                                giniCount++;
-                            }
-                %>
+                    if (pais.gini !== undefined && pais.gini !== null && !isNaN(pais.gini)) {
+                    giniSum += pais.gini;
+                    giniCount++;
+                    }
+                    %>
                     <tr>
                         <td class="hero-name">
                             <%= (pais.name && pais.name.official) ? pais.name.official : 'Desconocido' %>
                         </td>
                         <td>
-                            <%= (pais.capital && pais.capital.length > 0) ? pais.capital.join(', ') : 'No tiene' %>
+                            <%= (pais.capital && pais.capital.length> 0) ? pais.capital.join(', ') : 'No tiene' %>
                         </td>
                         <td>
                             <div class="powers-tags">
-                                <% if (pais.borders && pais.borders.length > 0) { %>
-                                    <% pais.borders.forEach(borde => { %>
-                                        <span class="power-tag"><%= borde %></span>
-                                    <% }); %>
-                                <% } else { %>
-                                    <span>Ninguno</span>
-                                <% } %>
+                                <% if (pais.borders && pais.borders.length> 0) { %>
+                                    <% pais.borders.forEach(borde=> { %>
+                                        <span class="power-tag">
+                                            <%= borde %>
+                                        </span>
+                                        <% }); %>
+                                            <% } else { %>
+                                                <span>Ninguno</span>
+                                                <% } %>
                             </div>
                         </td>
                         <td>
-                            <%= (pais.timezones && pais.timezones.length > 0) ? pais.timezones.join(', ') : 'UTC' %>
+                            <%= (pais.timezones && pais.timezones.length> 0) ? pais.timezones.join(', ') : 'UTC' %>
                         </td>
                         <td>
-                            <%= (pais.area !== undefined && pais.area !== null) ? pais.area.toLocaleString('es-AR') : '0' %>
+                            <%= (pais.area !==undefined && pais.area !==null) ? pais.area.toLocaleString('es-AR') : '0'
+                                %>
                         </td>
                         <td>
-                            <%= (pais.population !== undefined && pais.population !== null) ? pais.population.toLocaleString('es-AR') : '0' %>
+                            <%= (pais.population !==undefined && pais.population !==null) ?
+                                pais.population.toLocaleString('es-AR') : '0' %>
                         </td>
                         <td>
-                            <%= (pais.gini !== undefined && pais.gini !== null) ? pais.gini : 'N/A' %>
+                            <%= (pais.gini !==undefined && pais.gini !==null) ? pais.gini : 'N/A' %>
                         </td>
                         <td>
                             <%= pais.creador || 'Pablo Matias Ganne Moreno' %>
@@ -75,25 +76,27 @@
                             </button>
                         </td>
                     </tr>
-                <% 
-                        }
-                    }); 
-                } else { 
-                %>
-                    <tr>
-                        <td colspan="9" style="text-align: center; padding: 30px;">
-                            No hay países registrados en la base de datos.
-                        </td>
-                    </tr>
-                <% } %>
+                    <% } }); } else { %>
+                        <tr>
+                            <td colspan="9" style="text-align: center; padding: 30px;">
+                                No hay países registrados en la base de datos.
+                            </td>
+                        </tr>
+                        <% } %>
             </tbody>
-            
+
             <tfoot>
                 <tr>
                     <td colspan="4" style="text-align: right; font-weight: bold;">TOTALES / PROMEDIOS:</td>
-                    <td style="font-weight: bold;"><%= totalArea.toLocaleString('es-AR') %> km²</td>
-                    <td style="font-weight: bold;"><%= totalPopulation.toLocaleString('es-AR') %></td>
-                    <td style="font-weight: bold;"><%= giniCount > 0 ? (giniSum / giniCount).toFixed(2) : 'N/A' %></td>
+                    <td style="font-weight: bold;">
+                        <%= totalArea.toLocaleString('es-AR') %> km²
+                    </td>
+                    <td style="font-weight: bold;">
+                        <%= totalPopulation.toLocaleString('es-AR') %>
+                    </td>
+                    <td style="font-weight: bold;">
+                        <%= giniCount> 0 ? (giniSum / giniCount).toFixed(2) : 'N/A' %>
+                    </td>
                     <td colspan="2"></td>
                 </tr>
             </tfoot>
@@ -123,6 +126,20 @@
         } catch (error) {
             console.error("Error del proceso:", error);
             window.location.reload();
+        }
+    }
+
+    async function reiniciarDatos() {
+        if (!confirm("¿Querés borrar todos tus datos cargados y volver a sincronizar desde la API?")) return;
+        try {
+            const res = await fetch('/paises/restaurar', { method: 'POST' });
+            if (res.ok) {
+                window.location.reload();
+            } else {
+                alert("Error al intentar reiniciar los datos.");
+            }
+        } catch (error) {
+            console.error(error);
         }
     }
 </script>
