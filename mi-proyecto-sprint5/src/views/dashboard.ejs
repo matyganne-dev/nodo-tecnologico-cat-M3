@@ -1,9 +1,50 @@
 <section class="dashboard-container">
     <h1>Gestión de Países Hispanohablantes</h1>
     <p>Base de datos oficial de países y estadísticas regionales.</p>
-    <button onclick="reiniciarDatos()" class="cta-button" style="background-color: var(--alerta);">
-        Reiniciar Base de Datos
-    </button>
+
+    <div class="dashboard-controls-panel"
+        style="background: var(--bg-tarjetas); border: 1px solid var(--borde-color); border-radius: 12px; padding: 25px; margin-bottom: 30px; backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);">
+
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <button onclick="reiniciarDatos()" class="cta-button"
+                style="background-color: rgba(225, 177, 44, 0.15); color: var(--alerta); border-color: var(--alerta); padding: 10px 20px; font-size: 0.9rem;">
+                Reiniciar Mis Datos
+            </button>
+
+            <label class="switch-container"
+                style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--texto-color); font-weight: 600; font-size: 0.95rem; user-select: none;">
+                <input type="checkbox" id="filterMyCountries" onchange="ejecutarFiltrosCombinados()"
+                    style="accent-color: var(--primario); width: 18px; height: 18px; cursor: pointer;">
+                <span id="checkbox-text">Mostrar solo mis países</span>
+            </label>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label
+                    style="font-size: 0.8rem; color: var(--texto-mutado); font-weight: 600; text-transform: uppercase;">Buscar
+                    por Texto</label>
+                <input type="text" id="searchTexto" oninput="ejecutarFiltrosCombinados()"
+                    placeholder="País o capital..."
+                    style="background: rgba(10,10,12,0.6); border: 1px solid var(--borde-color); padding: 10px; border-radius: 6px; color: #fff; font-size: 0.9rem; outline: none;">
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 5px; grid-column: span 2;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label
+                        style="font-size: 0.8rem; color: var(--texto-mutado); font-weight: 600; text-transform: uppercase;">Población
+                        Mínima</label>
+                    <span id="popValueLabel"
+                        style="font-size: 0.85rem; color: var(--primario); font-weight: bold;">1</span>
+                </div>
+                <input type="range" id="searchPopSlider" min="1" max="100000000" value="1"
+                    oninput="ejecutarFiltrosCombinados()"
+                    style="accent-color: var(--primario); width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 5px; cursor: pointer; margin-top: 12px;">
+            </div>
+        </div>
+    </div>
+
     <div class="table-wrapper">
         <table class="custom-table">
             <thead>
@@ -71,9 +112,8 @@
                         </td>
                         <td class="actions-cell">
                             <a href="/paises/<%= pais._id %>/editar" class="btn-edit">Editar</a>
-                            <button type="button" class="btn-delete" onclick="confirmarEliminacion('<%= pais._id %>')">
-                                Eliminar
-                            </button>
+                            <button type="button" class="btn-delete"
+                                onclick="confirmarEliminacion('<%= pais._id %>')">Eliminar</button>
                         </td>
                     </tr>
                     <% } }); } else { %>
@@ -84,7 +124,6 @@
                         </tr>
                         <% } %>
             </tbody>
-
             <tfoot>
                 <tr>
                     <td colspan="4" style="text-align: right; font-weight: bold;">TOTALES / PROMEDIOS:</td>
@@ -105,19 +144,94 @@
 </section>
 
 <script>
+    function ejecutarFiltrosCombinados() {
+        const checkbox = document.getElementById("filterMyCountries");
+        const labelTexto = document.getElementById("checkbox-text");
+        const soloMios = checkbox.checked;
+
+        if (soloMios) {
+            labelTexto.innerText = "Mostrar todos";
+        } else {
+            labelTexto.innerText = "Mostrar solo mis países";
+        }
+
+        // buscador de texto
+        const textoBusqueda = document.getElementById("searchTexto").value.toLowerCase().trim();
+
+        // --- LOGICA EXCLUSIVA PARA EL SLIDER---
+        const popMinimaPermitida = parseInt(document.getElementById("searchPopSlider").value) || 1;
+        document.getElementById("popValueLabel").innerText = popMinimaPermitida.toLocaleString('es-AR');
+        // ---------------------------------------------
+
+        const MI_NOMBRE = "Pablo Matias Ganne Moreno";
+        const filas = document.querySelectorAll(".custom-table tbody tr");
+
+        filas.forEach(fila => {
+            if (fila.cells.length < 8) return;
+
+            const pais = fila.cells[0].innerText.toLowerCase().trim();
+            const capital = fila.cells[1].innerText.toLowerCase().trim();
+
+            // CORRECCIÓN CLAVE: Removemos los puntos de miles antes de evaluar el número para que no se rompa (esto me rompia el filtro)
+            const poblacionNum = parseInt(fila.cells[5].innerText.replace(/\./g, "").trim()) || 0;
+            const creador = fila.cells[7].innerText.trim();
+
+            const coincideAutor = !soloMios || (creador === MI_NOMBRE);
+            const coincideTexto = !textoBusqueda || pais.includes(textoBusqueda) || capital.includes(textoBusqueda);
+
+            // --- FILTRO DE POBLACION CORREGIDO ---
+            const coincidePoblacion = (poblacionNum >= popMinimaPermitida);
+
+            if (coincideAutor && coincideTexto && coincidePoblacion) {
+                fila.style.display = "";
+            } else {
+                fila.style.display = "none";
+            }
+        });
+
+        recalcularTotalesVisibles();
+    }
+
+    function recalcularTotalesVisibles() {
+        const filas = document.querySelectorAll(".custom-table tbody tr");
+        let totalPopulation = 0;
+        let totalArea = 0;
+        let giniSum = 0;
+        let giniCount = 0;
+
+        filas.forEach(fila => {
+            if (fila.style.display !== "none" && fila.cells.length >= 8) {
+                const areaTexto = fila.cells[4].innerText.replace(/\./g, "").trim();
+                const poblacionTexto = fila.cells[5].innerText.replace(/\./g, "").trim();
+                const giniTexto = fila.cells[6].innerText.trim();
+
+                totalArea += parseFloat(areaTexto) || 0;
+                totalPopulation += parseInt(poblacionTexto) || 0;
+
+                if (giniTexto !== "N/A" && !isNaN(parseFloat(giniTexto))) {
+                    giniSum += parseFloat(giniTexto);
+                    giniCount++;
+                }
+            }
+        });
+
+        const tfoot = document.querySelector(".custom-table tfoot tr");
+        if (tfoot) {
+            tfoot.cells[1].innerText = totalArea.toLocaleString('es-AR') + " km²";
+            tfoot.cells[2].innerText = totalPopulation.toLocaleString('es-AR');
+            tfoot.cells[3].innerText = giniCount > 0 ? (giniSum / giniCount).toFixed(2) : 'N/A';
+        }
+    }
+
     async function confirmarEliminacion(id) {
         const boton = document.querySelector(`button[onclick="confirmarEliminacion('${id}')"]`);
         const nombrePais = boton.closest('tr').querySelector('.hero-name').innerText.trim();
-
         if (!confirm(`¿Estás seguro que querés eliminar a ${nombrePais}? Esta acción no se puede deshacer.`)) {
             return;
         }
 
         try {
-            const res = await fetch(`/paises/${id}`, {
-                method: 'DELETE'
-            });
-
+            const res = await fetch(`/paises/${id}`, { method: 'DELETE' });
             if (res.ok) {
                 window.location.reload();
             } else {
