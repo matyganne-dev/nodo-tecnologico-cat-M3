@@ -12,17 +12,17 @@ class CountryRepository extends IRepository {
         return await Country.find({});
     }
 
-    // Obtener un país específico por su ID único de MongoDB
+    // Obtener un país específico por su ID
     async obtenerPorId(id) {
         return await Country.findById(id);
     }
 
-    // Crear manualmente un nuevo país (Formulario de Agregar)
+    // Crear un nuevo país 
     async crear(datos) {
         return await Country.create(datos);
     }
 
-    // Actualizar un país existente por su ID (Formulario de Edición)
+    // Editar un país existente por su ID 
     async actualizar(id, datos) {
         return await Country.findByIdAndUpdate(id, datos, { new: true, runValidators: true });
     }

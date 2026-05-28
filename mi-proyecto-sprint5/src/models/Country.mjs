@@ -10,11 +10,11 @@ const countrySchema = new mongoose.Schema({
         }
     },
     capital: {
-        type: [String], // Almacena un array de strings (ej: ["Buenos Aires"])
+        type: [String],
         required: true
     },
     borders: {
-        type: [String], // Array de códigos de 3 letras (ej: ["ARG", "BRA"])
+        type: [String],
         default: []
     },
     area: {
@@ -47,6 +47,6 @@ const countrySchema = new mongoose.Schema({
     }
 });
 
-// Definimos el modelo apuntando a la colección correspondiente
+// modelo apuntando a la colección correspondiente -> Grupo-06
 const Country = mongoose.model('Country', countrySchema, 'Grupo-06');
 export default Country;

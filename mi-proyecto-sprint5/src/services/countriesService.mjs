@@ -29,17 +29,17 @@ function mapearDatosFormulario(datosFormulario) {
 }
 
 export async function obtenerYPersistirPaisesEstablecidos() {
-    // 1. Buscamos en la base de datos si ya existen países que tengan mi nombre como creador
+    // 1 Buscamos en la base de datos si ya existen países que tengan mi nombre como creador
     const misPaisesExistentes = await CountryRepository.obtenerTodos().then(paises =>
         paises.filter(p => p.creador === MI_NOMBRE)
     );
 
-    // 2. Si ya tenés tus datos guardados, evitamos llamar a la API y devolvemos la base completa
+    // 2 Si ya tenemos los datos guardados, evitamos llamar a la API y devolvemos la base completa
     if (misPaisesExistentes && misPaisesExistentes.length > 0) {
         return await CountryRepository.obtenerTodos();
     }
 
-    // 3. Si no hay registros con tu nombre, la API se ejecuta, te inyecta tu autoría y los guarda
+    // 3 Si no hay registros con mi firma(nombre), la API se ejecuta, inyecta crea los datos y le agregamos el nombre de creador
     const URL = 'https://restcountries.com/v3.1/region/america';
     const response = await axios.get(URL);
     const countries = response.data;
@@ -65,10 +65,10 @@ export async function obtenerYPersistirPaisesEstablecidos() {
 }
 
 export async function restaurarPaisesPorCreador() {
-    // 1. Eliminar de la base de datos todos los documentos creados por mi
+    // 1 Eliminar de la base de datos todos los documentos creados por mi
     await CountryRepository.borrarPorCreador(MI_NOMBRE);
 
-    // 2. Volver a ejecutar el flujo limpio: consulta API, guarda upsert y retorna la lista
+    // 2 Volver a ejecutar el flujo limpio: consulta API, guarda upsert y retorna la lista
     return await obtenerYPersistirPaisesEstablecidos();
 }
 

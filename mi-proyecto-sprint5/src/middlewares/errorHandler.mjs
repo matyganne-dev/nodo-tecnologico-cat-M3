@@ -10,7 +10,7 @@ export const handleValidationErrors = (req, res, next) => {
             message: 'Error de validación',
             errors: errors.array().map(err => ({
                 campo: err.path,
-                mensaje: err.msg // 'err.msg' contiene el texto configurado en countryValidator
+                mensaje: err.msg // contiene el texto configurado en countryValidator
             }))
         });
     }
